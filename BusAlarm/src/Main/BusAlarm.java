@@ -50,6 +50,9 @@ public class BusAlarm extends JFrame {
 			public void run() {
 				try {
 					BusAlarm frame = new BusAlarm();
+					Toolkit toolkit = Toolkit.getDefaultToolkit();
+					Image img = toolkit.getImage("img/BusIcon.png");
+					frame.setIconImage(img);
 					frame.setTitle("버스 알림이");
 					frame.firstpanel = new FirstPanel(frame);
 					frame.intropanel = new IntroPanel(frame);
