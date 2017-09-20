@@ -1,0 +1,68 @@
+package IntroScreen;
+
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
+import javax.swing.*;
+
+import Main.BusAlarm;
+
+import javax.swing.*;
+
+public class MenuPanel extends JPanel {
+	BusAlarm busalarm;
+	ImageIcon icExitButton = new ImageIcon(this.getClass().getResource("/ExitButton.png"));
+	ImageIcon icExitButtonSelect = new ImageIcon(this.getClass().getResource("/ExitSelectButton.png"));
+	JButton bExitButton = new JButton(icExitButton);
+
+	JLabel menuBar = new JLabel(new ImageIcon(this.getClass().getResource("/MenuBar.png")));
+
+	int mouseX, mouseY;// 마우스 좌표
+
+	public MenuPanel(BusAlarm busalarm) {
+		
+		this.busalarm= busalarm;
+		setLayout(null);
+		
+		bExitButton.setSize(35,35);
+		bExitButton.setLocation(1240,7);
+		BusAlarm.setButton(bExitButton);
+		bExitButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {// 마우스 올라올때
+				bExitButton.setIcon(icExitButtonSelect);
+				bExitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				bExitButton.setIcon(icExitButton);
+			}
+
+			public void mousePressed(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		add(bExitButton);
+
+		menuBar.setSize(1280,50);
+		menuBar.setLocation(0,0);
+		menuBar.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();
+			}
+		});
+
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getXOnScreen();
+				int y = e.getYOnScreen();
+				setLocation(x - mouseX, y - mouseY);
+			}
+		});
+		add(menuBar);
+
+	}
+
+}
