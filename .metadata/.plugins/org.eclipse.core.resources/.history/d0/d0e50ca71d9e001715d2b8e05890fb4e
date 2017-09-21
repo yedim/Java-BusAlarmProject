@@ -1,0 +1,31 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+
+public class Bus extends Thread {
+	private Image imgbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.jpg")).getImage();
+	private int x, y;//현재 버스의 위치
+	private String busType;
+	
+	public Bus(int x, int y, String busType)
+	{
+		this.x=x;
+		this.y=y;
+		this.busType=busType;
+	}
+	public void screenDraw(Graphics2D g)
+	{
+		if(busType.equals("short"))
+		{
+			g.drawImage(imgbusIcon, x, y,null);
+		}
+		else if(busType.equals("long"))
+		{
+			g.drawImage(imgbusIcon, x, y,null);
+			g.drawImage(imgbusIcon, x+100, y,null);
+
+		}
+	}
+}

@@ -1,0 +1,14 @@
+package IntroScreen;
+
+import javax.swing.JPanel;
+
+public class IntroPanel extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public IntroPanel() {
+
+	}
+
+}

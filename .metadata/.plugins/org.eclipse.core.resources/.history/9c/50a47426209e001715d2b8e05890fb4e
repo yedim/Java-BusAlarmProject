@@ -1,0 +1,48 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+import java.util.ArrayList;
+
+import javax.swing.*;
+
+import Main.BusAlarm;
+
+public class BusAlarmPanel extends JPanel {
+
+	BusAlarm busalarm;
+	Bus bus;
+	Graphics2D g;
+	ImageIcon icMainScreen2 = new ImageIcon(this.getClass().getResource("/MainScreen2.jpg"));
+	private Image imgbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.jpg")).getImage();
+	JLabel lbMainScreen=new JLabel(icMainScreen2);
+
+	ArrayList<Bus> busList = new ArrayList<Bus>();
+	public BusAlarmPanel(BusAlarm busalarm) {
+		this.busalarm=busalarm;
+		setLayout(null);
+		lbMainScreen.setSize(1280,720);
+		lbMainScreen.setLocation(0,0);
+		add(lbMainScreen);
+		bus.start();
+		
+	}
+	
+	public void screenDraw(Graphics2D g)
+	{
+		for(int i=0; i<busList.size();i++)
+		{
+			Bus bus = busList.get(i);
+			bus.screenDraw(g);
+		}
+	}
+	public void MoveBus()
+	{
+		busList.add(new Bus(228,120,"short"));
+		busList.add(new Bus(332,580,"short"));
+		busList.add(new Bus(436,500,"short"));
+		busList.add(new Bus(540,340,"short"));
+		busList.add(new Bus(228,305,"short"));
+		
+	}
+
+}

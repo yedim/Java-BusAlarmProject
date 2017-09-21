@@ -1,0 +1,8 @@
+package BusAlarmScreen;
+
+import javax.swing.ImageIcon;
+
+public class Bus extends Thread {
+	Image imgbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.jpg")).getImage();
+
+}

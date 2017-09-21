@@ -1,0 +1,20 @@
+package StartScreen;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+import Main.BusAlarm;
+
+public class BusAlarmPanel extends JPanel {
+
+	BusAlarm busalarm;
+	ImageIcon icMainScreen2 = new ImageIcon(this.getClass().getResource("/MainScreen2.jpg"));
+	JLabel lbMainScreen=new JLabel(icMainScreen2);
+
+	public BusAlarmPanel(BusAlarm busalarm) {
+		this.busalarm=busalarm;
+		setLayout(null);
+	}
+
+}
