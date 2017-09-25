@@ -8,75 +8,23 @@ import javax.swing.JLabel;
 import Main.BusAlarm;
 
 public class Bus{
-	
-	int x,y;
-	String busType;
-	
-	BusAlarm busalarm;
-	
-	public Bus(int x, int y, String busType)
-	{
-		this.x=x;
-		this.y=y;
-		this.busType=busType;
+			
+	Point pos; // 미사일 좌표 변수
+
+	Bus(int x, int y) { // 미사일 좌표를 입력 받는 메소드
+		pos = new Point(x, y); // 미사일 좌표를 체크
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
+	int bus_speed=5;
 
-	public void setY(int y) {
-		this.y = y;
-	}
+	public void move() { // 미사일 이동을 위한 메소드
+				
+		if(pos.x>1100 || pos.x<10)
+		{
+			bus_speed=-bus_speed;
+			pos.y+=140;			
+		}
+		pos.x+=bus_speed;
 
-	public void setBusType(String busType) {
-		this.busType = busType;
 	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public String getBusType() {
-		return busType;
-	}
-	
-	
-//	public void paint(Graphics g)
-//	{
-//		if(busType.equals("short"))
-//		{
-//			g.drawImage(icbusIcon, x, y, null);
-//		}
-//		else if(busType.equals("long"))
-//		{
-//			g.drawImage(icbusIcon, x, y, null);
-//		}
-//	}
-	public void move()
-	{
-		x+=BusAlarm.BUS_SPEED;
-	}
-//	@Override
-//	public void run() 
-//	{
-//		try
-//		{
-//			while(true)
-//			{
-//				move();
-//				Thread.sleep(BusAlarm.SLEEP_TIME);
-//			
-//			}
-//		}
-//		catch(Exception e)
-//		{
-//			System.err.println(e.getMessage());
-//		}
-//	}
-	
 }
