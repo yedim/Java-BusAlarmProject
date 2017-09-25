@@ -1,0 +1,217 @@
+package BusAlarmScreen;
+
+import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.swing.text.*;
+import javax.xml.parsers.*;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import java.awt.List;
+import java.io.*;
+public class BusAPI {
+
+	public BusAPI()
+	{
+//		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088/7849444d62796c3435377954726871/xml/CardBusTimeNew/1/129/201708/152/");
+//
+//		InputStream tmpIS =null;
+//		BufferedReader rd=null;
+//		
+//		try{
+//			URL url=new URL(urlBuilder.toString());
+//			HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+//			conn.setRequestMethod("GET");
+//			conn.setRequestProperty("Content-type", "application/json");
+//			System.out.println("Response code : "+conn.getResponseCode());//응답코드 200번대 응답 성공.
+//			
+//			if(conn.getResponseCode()>=200 && conn.getResponseCode()<=300)
+//			{
+//				tmpIS=conn.getInputStream();
+//			}
+//			else
+//			{
+//				tmpIS=conn.getErrorStream();
+//			}
+//			
+//			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//			Document doc=(Document) dBuilder.parse(tmpIS);
+//			doc.getDocumentElement().normalize();
+//			System.out.println("Root element : "+ doc.getDocumentElement().getNodeName());
+//		
+//			NodeList nList=doc.getElementsByTagName("row");
+//			
+//			Node nBasic=nList.item(0);
+//			Element eBasic=(Element)nBasic;
+//			System.out.println("날짜 : "+eBasic.getElementsByTagName("USE_MON").item(0).getTextContent());
+//			System.out.println("버스노선 : "+eBasic.getElementsByTagName("BUS_ROUTE_NO").item(0).getTextContent());
+//			System.out.println("노선명 : "+eBasic.getElementsByTagName("BUS_ROUTE_NM").item(0).getTextContent());
+//			System.out.println("------------------------------");
+		
+//			GetBusStopInfo(nList);
+			
+//			GetBusStopPassenger(nList,3);	
+//			for(int temp=0; temp<nList.getLength();temp++)
+//			{
+//				Node nNode=nList.item(temp);
+//				
+//				if(nNode.getNodeType()==Node.ELEMENT_NODE)
+//				{
+//					Element eElement =(Element)nNode;
+//					System.out.println("버스정류장 ARS번호 : "+eElement.getElementsByTagName("BSST_ARS_NO").item(0).getTextContent());
+//					System.out.println("역명 : "+eElement.getElementsByTagName("BUS_STA_NM").item(0).getTextContent());
+//					
+//					String[] array = new String[]{"MIDNIGHT","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN",
+//							"ELEVEN","TWELVE","THIRTEEN","FOURTEEN","FIFTEEN","SIXTEEN","SEVENTEEN","EIGHTEEN","NINETEEN","TWENTY",
+//							"TWENTY_ONE","TWENTY_TWO","TWENTY_THREE"};
+//
+//					for(int i=7;i<9;i++)
+//					{
+//						System.out.println(i+"시 승차 총객수 : "+eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent()+" "+
+//								Integer.parseInt(eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent())/30);
+//						System.out.println(i+"시 하차 총객수 : "+eElement.getElementsByTagName(array[i]+"_ALIGHT_NUM").item(0).getTextContent()+" ");	
+//					}
+//					System.out.println();
+//				}
+//			}
+//		}
+//		catch(MalformedURLException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		catch(ProtocolException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		catch(IOException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		catch(ParserConfigurationException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		catch(SAXException e)
+//		{
+//			e.printStackTrace();
+//		}
+		
+	}
+	
+	public void BusAPIInfo(String businfo,int i)
+	{
+		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088/7849444d62796c3435377954726871/xml/CardBusTimeNew/1/129/201708/152/");
+
+		InputStream tmpIS =null;
+		BufferedReader rd=null;
+		
+		try{
+			URL url=new URL(urlBuilder.toString());
+			HttpURLConnection conn= (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-type", "application/json");
+			
+			if(conn.getResponseCode()>=200 && conn.getResponseCode()<=300)
+			{
+				tmpIS=conn.getInputStream();
+			}
+			else
+			{
+				tmpIS=conn.getErrorStream();
+			}
+			
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc=(Document) dBuilder.parse(tmpIS);
+			doc.getDocumentElement().normalize();
+		
+			NodeList nList=doc.getElementsByTagName("row");
+			
+			if(businfo.equals("busStopInfo"))
+			{
+				GetBusStopInfo(nList);
+			}
+			else if(businfo.equals("busStopPassenger"))
+			{
+				GetBusStopPassenger(nList,i);
+			}
+		}
+		catch(MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		catch(ProtocolException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch(ParserConfigurationException e)
+		{
+			e.printStackTrace();
+		}
+		catch(SAXException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public String GetBusStopInfo(NodeList nList,int i)
+	{
+		String s=null;
+		
+		for(int temp=0; temp<nList.getLength();temp++)
+		{
+			Node nNode=nList.item(temp);
+			
+			if(nNode.getNodeType()==Node.ELEMENT_NODE)
+			{
+				Element eElement =(Element)nNode;
+				if(i==1)
+				{
+					s=eElement.getElementsByTagName("BSST_ARS_NO").item(0).getTextContent();//버스정류장 ARS번호 
+				}
+				else if(i==2)
+				{
+					s=eElement.getElementsByTagName("BUS_STA_NM").item(0).getTextContent();//역명
+				}
+			}
+		}
+		return s;
+	}
+	public String GetBusStopPassenger(NodeList nList,int i)
+	{
+		String s;
+		for(int temp=0; temp<nList.getLength();temp++)
+		{
+			Node nNode=nList.item(temp);
+			
+			if(nNode.getNodeType()==Node.ELEMENT_NODE)
+			{
+				Element eElement =(Element)nNode;
+				String[] array = new String[]{"MIDNIGHT","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN",
+						"ELEVEN","TWELVE","THIRTEEN","FOURTEEN","FIFTEEN","SIXTEEN","SEVENTEEN","EIGHTEEN","NINETEEN","TWENTY",
+						"TWENTY_ONE","TWENTY_TWO","TWENTY_THREE"};
+
+				
+					s=i+"시 승차 총객수 : "+eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent();
+							//Integer.parseInt(eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent())/30);
+					s=i+"시 하차 총객수 : "+eElement.getElementsByTagName(array[i]+"_ALIGHT_NUM").item(0).getTextContent();	
+				System.out.println();
+			}
+		}
+		return s;
+	}
+
+
+}

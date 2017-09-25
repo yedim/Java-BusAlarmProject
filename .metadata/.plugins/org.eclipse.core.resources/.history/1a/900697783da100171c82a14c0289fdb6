@@ -1,0 +1,170 @@
+package BusAlarmScreen;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.util.Calendar;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
+
+import Main.BusAlarm;
+
+
+public class BusAlarmPanel extends JPanel implements ActionListener {
+
+	BusAlarm busalarm;
+	Image icmainScreen = new ImageIcon(this.getClass().getResource("/MainScreen2.png")).getImage();
+	Image icbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.png")).getImage();
+
+	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
+	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
+	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
+
+	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
+	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
+
+	Calendar calendar1 = Calendar.getInstance();
+
+	int year = calendar1.get(Calendar.YEAR);
+	int month = calendar1.get(Calendar.MONTH);
+	int day = calendar1.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar1.get(Calendar.HOUR_OF_DAY);
+	int min = calendar1.get(Calendar.MINUTE);
+	int sec = calendar1.get(Calendar.SECOND);
+	
+	Timer timer;
+	JLabel lbPresent;
+	
+	JLabel bbusroad_green;
+	//JLabel bbusroad_yellow=new JLabel(icbusRoad_yellow);
+	//JLabel bbusroad_red=new JLabel(icbusRoad_red);
+
+	JScrollPane scrollPane;
+	public BusAlarmPanel(BusAlarm busalarm) {
+		this.busalarm = busalarm;
+		//setLayout(null);
+		setBackground(new Color(255,243,225));
+		
+		lbPresent = new JLabel(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec, Label.RIGHT);
+		lbPresent.setBounds(1020, 5, 220, 40);
+		lbPresent.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		add(lbPresent);
+		
+		timer = new Timer(1000, this);		
+		
+//		JScrollBar scrollBar = new JScrollBar();
+//		scrollBar.setBounds(1244, 1, 26, 680);
+//		add(scrollBar);
+//		scrollBar.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+//		    @Override
+//		    public void adjustmentValueChanged(AdjustmentEvent e) {
+//		        if (e.getValueIsAdjusting()) {
+//		            //user is still scrolling 
+//		        	bbusroad_green=new JLabel(icbusRoad_green);
+//		        	
+//		        }
+//		        else {
+//		            //user is done scrolling
+//		        }
+//		    }
+//		});
+//		
+		setLayout(new BorderLayout());
+		 DefaultTableModel model = new DefaultTableModel(50, 26){
+			 
+	            @Override
+	            public void addColumn(Object arg0) {
+	                String columnName = super.getColumnName(getColumnCount());
+	               addColumn(columnName);
+	            }
+	             
+	        };
+	        JTable mainTable = new JTable(model);
+	 
+	        // Enable single cell selection
+	        mainTable.setCellSelectionEnabled(true);
+	         
+	        // Disable AutoResize function of the JTable
+	        mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	 
+	        // Set each row height to 21 for better look
+	        mainTable.setRowHeight(21);
+	 
+		JScrollPane scrollPane = new JScrollPane(mainTable);
+        
+        scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener(){
+ 
+        	 public void adjustmentValueChanged(AdjustmentEvent arg0) {
+                 if (!arg0.getValueIsAdjusting()) {
+                     JScrollBar bar = scrollPane.getHorizontalScrollBar();
+                     int pos = bar.getValue();
+                     int width = bar.getWidth();
+                     if (bar.getMaximum() == pos + width) {
+                         int numOfColumns = model.getColumnCount();
+                         String columnName = model.getColumnName(numOfColumns);
+                         model.addColumn(columnName);
+                     }
+  
+                 }
+             }
+             
+        });
+        add(scrollPane);
+        
+        
+        
+        
+		timer.setInitialDelay(0);
+		timer.start();
+		//bbusroad_yellow.setSize(120,12);
+		//bbusroad_red.setSize(120,12);
+		
+//		
+//		JScrollBar scrollbar = new JScrollBar();
+//		scrollbar.setBounds(1244, 1, 26, 684);
+//		add(scrollbar);
+//	
+
+		
+	}
+	 
+//	public void paint(Graphics g) {
+//	 super.paint(g);
+//
+//	 	g.drawImage(icbusRoad_green, 80, 180, this);
+//	 	g.drawImage(icbusRoad_yellow, 200, 180, this);
+//	 	g.drawImage(icbusRoad_red, 320, 180, this);
+//
+//	 	while(i<9)
+//	 	{
+//		 	g.drawImage(icbusStop, busStop_x, busStop_y, this);
+//		 	busStop_x+=busRoad_w;
+//		 	i++;
+//	 	}
+//	 }
+	
+	public void actionPerformed(ActionEvent e) {
+		++sec;
+		Calendar calendar2 = Calendar.getInstance();
+		year = calendar2.get(Calendar.YEAR);
+		month = calendar2.get(Calendar.MONTH);
+		day = calendar2.get(Calendar.DAY_OF_MONTH);
+		hour = calendar2.get(Calendar.HOUR_OF_DAY);
+		min = calendar2.get(Calendar.MINUTE);
+		sec = calendar2.get(Calendar.SECOND);
+		lbPresent.setText(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec);
+	}
+}

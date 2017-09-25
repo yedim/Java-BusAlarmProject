@@ -1,0 +1,88 @@
+package BusAlarmScreen;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.util.Calendar;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.Timer;
+
+import Main.BusAlarm;
+import javax.swing.SwingConstants;
+
+public class BusPanel extends JPanel {
+
+	BusAlarm busalarm;
+
+	
+	Image icbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.png")).getImage();
+
+	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
+	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
+	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
+	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
+	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
+
+	Calendar calendar1 = Calendar.getInstance();
+	int year = calendar1.get(Calendar.YEAR);
+	int month = calendar1.get(Calendar.MONTH);
+	int day = calendar1.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar1.get(Calendar.HOUR_OF_DAY);
+	int min = calendar1.get(Calendar.MINUTE);
+	int sec = calendar1.get(Calendar.SECOND);
+	Timer timer;
+	JLabel lbPresent;
+	
+	JLabel label;
+	JLabel bbusroad_green;
+	
+	public BusPanel(BusAlarm busalarm) {
+		super(true);
+		label = new JLabel();
+		setLayout(new BorderLayout());
+
+		JScrollBar vbar = new JScrollBar(JScrollBar.VERTICAL, 30, 40, 0, 300);
+		vbar.addAdjustmentListener(new MyAdjustmentListener());
+
+		add(vbar, BorderLayout.EAST);
+		add(label, BorderLayout.CENTER);
+		
+//		lbPresent = new JLabel(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec, SwingConstants.RIGHT);
+//		lbPresent.setVerticalAlignment(SwingConstants.TOP);
+//		lbPresent.setBounds(1020, 5, 220, 40);
+//		lbPresent.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+//		add(lbPresent);
+//		
+//		timer = new Timer(1000, this);	
+//		timer.setInitialDelay(0);
+//		timer.start();
+	}
+
+	class MyAdjustmentListener implements AdjustmentListener {
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			label.setText(" New Value is " + e.getValue() + " ");
+			repaint();
+		}
+	}
+//	public void actionPerformed(ActionEvent e) {
+//		++sec;
+//		Calendar calendar2 = Calendar.getInstance();
+//		year = calendar2.get(Calendar.YEAR);
+//		month = calendar2.get(Calendar.MONTH);
+//		day = calendar2.get(Calendar.DAY_OF_MONTH);
+//		hour = calendar2.get(Calendar.HOUR_OF_DAY);
+//		min = calendar2.get(Calendar.MINUTE);
+//		sec = calendar2.get(Calendar.SECOND);
+//		lbPresent.setText(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec);
+//	}
+
+}

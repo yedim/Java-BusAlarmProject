@@ -1,0 +1,106 @@
+package BusAlarmScreen;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.Timer;
+
+import Main.BusAlarm;
+import javax.swing.JScrollPane;
+
+
+public class BusAlarmPanel extends JPanel implements ActionListener {
+
+	BusAlarm busalarm;
+	Image icbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.png")).getImage();
+
+	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
+	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
+	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
+
+	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
+	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
+
+	Calendar calendar1 = Calendar.getInstance();
+
+	int year = calendar1.get(Calendar.YEAR);
+	int month = calendar1.get(Calendar.MONTH);
+	int day = calendar1.get(Calendar.DAY_OF_MONTH);
+	int hour = calendar1.get(Calendar.HOUR_OF_DAY);
+	int min = calendar1.get(Calendar.MINUTE);
+	int sec = calendar1.get(Calendar.SECOND);
+	
+	Timer timer;
+	JLabel lbPresent;
+	
+	JLabel bbusroad_green;
+	//JLabel bbusroad_yellow=new JLabel(icbusRoad_yellow);
+	//JLabel bbusroad_red=new JLabel(icbusRoad_red);
+
+	JScrollPane scrollPane;
+	public BusAlarmPanel(BusAlarm busalarm) {
+		this.busalarm = busalarm;
+		setLayout(null);
+		setBackground(new Color(255,243,225));
+		
+		lbPresent = new JLabel(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec, Label.RIGHT);
+		lbPresent.setBounds(1020, 5, 220, 40);
+		lbPresent.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		add(lbPresent);
+		
+		timer = new Timer(1000, this);		
+		
+		JScrollBar scrollBar = new JScrollBar(JScrollBar.HORIZONTAL, 30, 20, 0, 500);
+		scrollBar.setBounds(1244, 1, 26, 680);
+		add(scrollBar);
+		
+		timer.setInitialDelay(0);
+		timer.start();
+		//bbusroad_yellow.setSize(120,12);
+		//bbusroad_red.setSize(120,12);
+		
+//		
+//		JScrollBar scrollbar = new JScrollBar();
+//		scrollbar.setBounds(1244, 1, 26, 684);
+//		add(scrollbar);
+//	
+
+		
+	}
+	 
+//	public void paint(Graphics g) {
+//	 super.paint(g);
+//
+//	 	g.drawImage(icbusRoad_green, 80, 180, this);
+//	 	g.drawImage(icbusRoad_yellow, 200, 180, this);
+//	 	g.drawImage(icbusRoad_red, 320, 180, this);
+//
+//	 	while(i<9)
+//	 	{
+//		 	g.drawImage(icbusStop, busStop_x, busStop_y, this);
+//		 	busStop_x+=busRoad_w;
+//		 	i++;
+//	 	}
+//	 }
+	
+	public void actionPerformed(ActionEvent e) {
+		++sec;
+		Calendar calendar2 = Calendar.getInstance();
+		year = calendar2.get(Calendar.YEAR);
+		month = calendar2.get(Calendar.MONTH);
+		day = calendar2.get(Calendar.DAY_OF_MONTH);
+		hour = calendar2.get(Calendar.HOUR_OF_DAY);
+		min = calendar2.get(Calendar.MINUTE);
+		sec = calendar2.get(Calendar.SECOND);
+		lbPresent.setText(year+"-"+month+"-"+day+"   "+ hour + ":" + min + ":" + sec);
+	}
+}

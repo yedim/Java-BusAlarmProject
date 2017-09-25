@@ -1,0 +1,59 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus extends Thread {
+	
+	private ImageIcon icbusIcon=new ImageIcon(this.getClass().getResource("/BusIcon.png"));
+	private int x,y;
+	private String busType;
+	
+	BusAlarm busalarm;
+	
+	public Bus(int x, int y, String busType)
+	{
+		this.x=x;
+		this.y=y;
+		this.busType=busType;
+	}
+	public void Draw(JLabel lbbusIcon)
+	{
+		if(busType.equals("short"))
+		{
+			lbbusIcon.setSize(48,65);
+			lbbusIcon.setLocation(0,0);
+	
+		}
+		else if(busType.equals("long"))
+		{
+			lbbusIcon.setSize(48,65);
+			lbbusIcon.setLocation(0,0);
+		}
+	}
+	public void move()
+	{
+		x+=BusAlarm.BUS_SPEED;
+	}
+	@Override
+	public void run() 
+	{
+		try
+		{
+			while(true)
+			{
+				move();
+				Thread.sleep(BusAlarm.SLEEP_TIME);
+			}
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+	}
+	
+}

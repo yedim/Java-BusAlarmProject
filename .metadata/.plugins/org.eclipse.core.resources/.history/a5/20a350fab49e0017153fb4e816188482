@@ -1,0 +1,12 @@
+package BusAlarmScreen;
+
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+public class BusRoad extends JPanel{
+
+	BufferedImage image;
+
+
+}

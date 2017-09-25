@@ -1,0 +1,11 @@
+package BusAlarmScreen;
+
+public class BusStop {
+
+
+	int x,y;
+	public BusStop()
+	{
+		
+	}
+}

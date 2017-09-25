@@ -55,8 +55,8 @@ public class IntroPanel extends JPanel {
 				bStartButton.setIcon(icStartButton);
 			}
 			public void mousePressed(MouseEvent e) {
-				busalarm.change("busalarmpanel");
-
+				//busalarm.change("busalarmpanel");
+				busalarm.change("buspanel");
 			}
 		});
 		add(bStartButton);

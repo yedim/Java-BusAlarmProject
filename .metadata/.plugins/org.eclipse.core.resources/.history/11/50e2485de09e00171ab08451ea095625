@@ -1,0 +1,32 @@
+package BusAlarmScreen;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class BusRoad extends JPanel implements ActionListener{
+
+	Timer tm = new Timer(5,this);
+	int x=0, velX=2;
+	
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		g.setColor(Color.RED);
+		g.fillRect(30, 30, 50, 50);
+		
+		tm.start();
+	}
+	public void actionPerformed(ActionEvent e)
+	{
+		x=x+velX;
+		repaint();
+	}
+	
+
+}

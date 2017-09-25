@@ -1,0 +1,61 @@
+package BusAlarmScreen;
+
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class TimeControl extends JPanel implements ActionListener { 
+    Calendar calendar1 = Calendar.getInstance(); 
+
+    int hour = calendar1.get(Calendar.HOUR_OF_DAY); 
+    int min = calendar1.get(Calendar.MINUTE); 
+    int sec = calendar1.get(Calendar.SECOND); 
+
+    Timer timer; 
+
+    JLabel lbPresent; 
+
+    public TimeControl() { 
+          timer = new javax.swing.Timer(1000, this); 
+          timer.setInitialDelay(0); 
+          timer.start(); 
+
+          lbPresent = new JLabel("현재 : " + hour + "시" + min + "분 " + sec + "초", 
+                      Label.RIGHT); 
+          add(lbPresent); 
+    } 
+
+    public void actionPerformed(ActionEvent e) { 
+          ++sec; 
+          Calendar calendar2 = Calendar.getInstance(); 
+          hour = calendar2.get(Calendar.HOUR_OF_DAY); 
+          min = calendar2.get(Calendar.MINUTE); 
+          sec = calendar2.get(Calendar.SECOND); 
+          lbPresent.setText("현재 : " + hour + "시" + min + "분 " + sec + "초"); 
+    } 
+
+    private static void createAndShowGUI() { 
+          JFrame.setDefaultLookAndFeelDecorated(true); 
+          JFrame frame = new JFrame("TimeControl"); 
+          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+          TimeControl TimeControl = new TimeControl(); 
+          TimeControl.setOpaque(true); 
+          frame.setContentPane(TimeControl); 
+          frame.pack(); 
+          frame.setVisible(true); 
+    } 
+
+    public static void main(String[] args) { 
+          javax.swing.SwingUtilities.invokeLater(new Runnable() { 
+                public void run() { 
+                      createAndShowGUI(); 
+                } 
+          }); 
+    } 
+}

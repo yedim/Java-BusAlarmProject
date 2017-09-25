@@ -1,0 +1,14 @@
+package BusAlarmScreen;
+
+import javax.swing.JPanel;
+
+public class TimeControl extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public TimeControl() {
+
+	}
+
+}

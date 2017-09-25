@@ -1,0 +1,9 @@
+package BusAlarmScreen;
+
+public class BusAlarmFrame {
+
+	public BusAlarmFrame() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
