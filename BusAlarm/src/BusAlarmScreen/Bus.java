@@ -8,17 +8,16 @@ import javax.swing.JLabel;
 import Main.BusAlarm;
 
 public class Bus{
+			
+	Point pos; // 미사일 좌표 변수
 
-
-	Point pos; //버스 좌표
-
-	Bus(int x, int y) {
-		pos = new Point(x, y); //버스의 좌표를 체크
+	Bus(int x, int y) { // 미사일 좌표를 입력 받는 메소드
+		pos = new Point(x, y); // 미사일 좌표를 체크
 	}
 
-	int bus_speed=1;
+	int bus_speed=5;
 
-	public void move() { // 버스 이동을 위한 메소드
+	public void move() { // 미사일 이동을 위한 메소드
 				
 		if(pos.x>1100 || pos.x<10)
 		{
@@ -28,8 +27,4 @@ public class Bus{
 		pos.x+=bus_speed;
 
 	}
-
-
-	
-
 }

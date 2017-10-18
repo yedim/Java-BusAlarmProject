@@ -79,22 +79,11 @@ public class BusAPI {
 					break;
 				}
 			}
+
 		}
 
 		return s;
 
-	}
-	
-	public String GetBusInfo()
-	{
-		String s;
-		NodeList nList = BusInfo();
-		 Node nBasic=nList.item(0);
-		 Element eBasic=(Element)nBasic;
-		 s= "<html>"+"날짜 : "+eBasic.getElementsByTagName("USE_MON").item(0).getTextContent()+"<br>"
-		 +"버스노선 : "+eBasic.getElementsByTagName("BUS_ROUTE_NO").item(0).getTextContent()+"<br>"
-		 +"노선명 : "+eBasic.getElementsByTagName("BUS_ROUTE_NM").item(0).getTextContent();
-		 return s;
 	}
 
 }
