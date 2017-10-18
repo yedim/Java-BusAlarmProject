@@ -87,6 +87,8 @@ public class IntroPanel extends JPanel {
 					lbIntroScreen.setIcon(imgIntroScreen);
 				}
 				else if(select ==bIntroButton3){
+					imgIntroScreen = new ImageIcon(this.getClass().getResource("/IntroScreen3.png"));
+					lbIntroScreen.setIcon(imgIntroScreen);
 				}
 			}
 		});
