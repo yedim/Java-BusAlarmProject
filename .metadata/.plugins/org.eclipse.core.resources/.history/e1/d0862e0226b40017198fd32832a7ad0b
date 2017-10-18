@@ -1,0 +1,29 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus{
+			
+	Point pos; 
+
+
+	Bus(int x, int y) { 
+		pos = new Point(x, y); 
+	}
+
+	int bus_speed=5;
+
+	public void move() { 
+				
+		if(pos.x>1100 || pos.x<10)
+		{
+		pos.x+=bus_speed;
+
+		}
+	}
+}

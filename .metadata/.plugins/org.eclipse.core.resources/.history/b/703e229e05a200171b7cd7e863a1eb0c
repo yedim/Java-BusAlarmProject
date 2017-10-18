@@ -1,0 +1,16 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus extends Thread{
+			
+	public Bus()
+	{
+		
+	}
+}

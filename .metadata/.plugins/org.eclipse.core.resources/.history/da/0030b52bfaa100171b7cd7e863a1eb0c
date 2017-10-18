@@ -1,0 +1,25 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus{
+	
+	int x,y;
+	String busType;
+	
+	BusAlarm busalarm;
+	
+	public Bus(int x, int y, String busType)
+	{
+		this.x=x;
+		this.y=y;
+		this.busType=busType;
+	}
+
+	
+}

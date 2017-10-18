@@ -1,0 +1,71 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus{
+		
+	static int time;
+
+	Point pos; //버스 좌표
+
+	Bus(int x, int y) {
+		pos = new Point(x, y); //버스의 좌표를 체크
+	}
+
+	int bus_speed=1;
+
+	public void move() { // 버스 이동을 위한 메소드
+				
+		if(pos.x>1100 || pos.x<10)
+		{
+			bus_speed=-bus_speed;
+			pos.y+=140;			
+		}
+		pos.x+=bus_speed;
+
+	}
+	public void init() { // 편의를 위해 init 에서 기본적인 세팅을 합니다.
+		x = 100;
+		y = 100;
+	}
+	public void start() {
+		th = new Thread(this);
+		th.start();
+	}
+
+	public void run() {
+		try {
+			while (true) {
+				BusProcess(); 
+
+				repaint();
+				Thread.sleep(40);
+				time++;
+			}
+		} catch (Exception e) {
+		}
+	}
+	public void BusProcess() { //버스 처리 메소드
+		if (time%500==0) { 
+			bus = new Bus(x, y); // 좌표 체크하여 넘기기
+			Bus_List.add(bus); // 버스 추가
+		}
+	}
+	public void paint(Graphics g) {
+		super.paint(g);
+		
+		for (int i = 0; i < Bus_List.size(); ++i) {
+			bus = (Bus) (Bus_List.get(i));
+			g.drawImage(imgbusicon, bus.pos.x, bus.pos.y+15 +bbusStop[1][1].getY()-330 , this);
+			bus.move();
+		}
+
+	}
+	
+
+}

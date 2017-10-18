@@ -1,0 +1,22 @@
+package BusAlarmScreen;
+
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import Main.BusAlarm;
+
+public class Bus extends Thread{
+	ImageIcon icbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.png"));
+	int x,y;
+	public Bus(int x, int y)
+	{
+		this.x=x;
+		this.y=y;
+	}
+	public void screenDraw(Graphics2D g)
+	{
+		
+	}
+}

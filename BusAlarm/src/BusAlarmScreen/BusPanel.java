@@ -2,15 +2,17 @@ package BusAlarmScreen;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -34,15 +36,20 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
 	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
 	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
-	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
+	Image icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png")).getImage();
 	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
+	ImageIcon icmainScreenBar=new ImageIcon(this.getClass().getResource("/MenuBar.png"));
+	ImageIcon icfold=new ImageIcon(this.getClass().getResource("/foldbutton2.png"));
 
+	
+	JLabel lbbusInfo;
 	JLabel label;
 	JLabel lbbusroad_green;
 	JLabel lbbusroad_yellow;
 	JButton bbusStop[][] = new JButton[13][10];
 	JLabel lbbusStop[][] = new JLabel[13][10];
-	JLabel jlabel;
+	JLabel lbmainScreenBar=new JLabel(icmainScreenBar);
+	JButton bfoldButton = new JButton(icfold);
 
 	Calendar calendar1 = Calendar.getInstance();
 	int year = calendar1.get(Calendar.YEAR);
@@ -54,20 +61,23 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 	Timer timer;
 	JLabel lbPresent;
 
+	boolean menubarVisible=true;
+
 	int i = 0, j = 0;
 	int count = 0;
 	BusAPI busapi = new BusAPI();
 
 	int x, y;
+	int busStop_x, busStop_y;
 	Thread th;
 
 	ArrayList Bus_List = new ArrayList();
-
+	ArrayList BusStop_List=new ArrayList();
 	Bus bus; // 버스 접근 키
+	BusStop busStop;
 	
 	static int time;
 	
-	 
 	public BusPanel(BusAlarm busalarm) {
 		
 		super(true);
@@ -101,22 +111,82 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 		for (i = 0; i < 13; i++) {
 			for (j = 0; j < 10; j++) {
 				lbbusStop[i][j] = new JLabel();
-				lbbusStop[i][j].setText("버스");//busapi.GetBusStopInfo(count)
+				lbbusStop[i][j].setText("정류장");//busapi.GetBusStopInfo(count)
 				count++;
-				lbbusStop[i][j].setBounds(115 * j + 77, 140 * i + 226, 110, 50);
+				lbbusStop[i][j].setBounds(115 * j + 77, 140 * i + 226, 110, 60);
 				add(lbbusStop[i][j]);
 
-				bbusStop[i][j] = new JButton(icbusStop);
-				bbusStop[i][j].setBounds(115 * j + 93, 140 * i + 220, 16, 16);
-				BusAlarm.setButton(bbusStop[i][j]);
-				add(bbusStop[i][j]);
+				
+//				bbusStop[i][j] = new JButton(icbusStop);
+//				bbusStop[i][j].setBounds(115 * j + 93, 140 * i + 220, 16, 16);
+//				BusAlarm.setButton(bbusStop[i][j]);
+//				add(bbusStop[i][j]);				
 			}
 		}
-
+		
 		add(lbbusroad_green);
 		
-		init();
-		start();
+		//메뉴바
+		lbbusInfo=new JLabel();
+		lbbusInfo.setFont(new Font("나눔스퀘어 Bold", Font.PLAIN, 18));
+		lbbusInfo.setText("버스정보");//busapi.GetBusInfo()
+		lbbusInfo.setSize(500,100);
+		lbbusInfo.setLocation(0,0);
+		add(lbbusInfo);
+		
+		lbmainScreenBar.setIcon(icmainScreenBar);
+		lbmainScreenBar.setSize(1280, 120);
+		lbmainScreenBar.setLocation(0,0);
+		add(lbmainScreenBar);
+		
+		bfoldButton.setIcon(icfold);
+		bfoldButton.setSize(90, 26);
+		bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,120);
+		BusAlarm.setButton(bfoldButton);
+		bfoldButton.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				
+				if(menubarVisible == false)
+				{
+					lbmainScreenBar.setVisible(true);
+					lbbusInfo.setVisible(true);
+					menubarVisible=true;
+					bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,120);
+				}
+				else
+				{
+					lbmainScreenBar.setVisible(false);
+					lbbusInfo.setVisible(false);
+					menubarVisible=false;		
+					bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,0);
+				}
+
+			}
+		});
+		add(bfoldButton);
+	
+//		bbusStop[0][0].addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				Object obj = e.getSource();
+//				if ((JButton) obj == bbusStop[0][0]) {
+//					final Frame frbusStop = new Frame("busStop");
+//					frbusStop.setVisible(true);
+//					frbusStop.addWindowListener(new WindowAdapter() {
+//						public void windowClosing(WindowEvent e) {
+//							frbusStop.setVisible(false);
+//							frbusStop.dispose();
+//						}
+//					});
+//					frbusStop.setSize(400, 250);
+//					frbusStop.setLocation(200, 200);
+//					frbusStop.setResizable(false);
+//					frbusStop.setLocationRelativeTo(null);
+//				}
+//			}
+//		});	
+		
+	init();
+	start();
 	}
 	class MyAdjustmentListener implements AdjustmentListener {
 		public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -125,9 +195,9 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 				for (int j = 0; j < 10; j++) {
 					lbbusStop[i][j].setLocation(115 * j + 77, e.getValue() - (-140 * i + 774));
 					add(lbbusStop[i][j]);
-					bbusStop[i][j].setLocation(115 * j + 93, e.getValue() - (-140 * i +780));
-					BusAlarm.setButton(bbusStop[i][j]);
-					add(bbusStop[i][j]);
+//					bbusStop[i][j].setLocation(115 * j + 93, e.getValue() - (-140 * i +780));
+//					BusAlarm.setButton(bbusStop[i][j]);
+//					add(bbusStop[i][j]);
 				}
 			}
 
@@ -151,10 +221,12 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 		sec = calendar2.get(Calendar.SECOND);
 		lbPresent.setText(year + "-" + month + "-" + day + "   " + hour + ":" + min + ":" + sec);
 	}
-	
+
 	public void init() { // 편의를 위해 init 에서 기본적인 세팅을 합니다.
 		x = 100;
 		y = 100;
+		busStop_x=85;
+		busStop_y=85;
 	}
 	public void start() {
 		th = new Thread(this);
@@ -163,6 +235,8 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 
 	public void run() {
 		try {
+			BusStopProcess();
+
 			while (true) {
 				BusProcess(); 
 
@@ -173,41 +247,34 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 		} catch (Exception e) {
 		}
 	}
+	
+	public void BusStopProcess(){
+		busStop=new BusStop(busStop_x, busStop_y);
+		BusStop_List.add(busStop);
+	}
+	
 	public void BusProcess() { //버스 처리 메소드
-		if (time%500==0) { 
+		if (time%600==0) { 
 			bus = new Bus(x, y); // 좌표 체크하여 넘기기
 			Bus_List.add(bus); // 버스 추가
 		}
 	}
+	
 	public void paint(Graphics g) {
 		super.paint(g);
+
+		for (int i = 0; i < Bus_List.size(); ++i) {
+			bus = (Bus) (Bus_List.get(i));
+			g.drawImage(icbusStop, busStop.pos.x, bus.pos.y +lbbusStop[1][1].getY()-248 , this);
+		}
 		
 		for (int i = 0; i < Bus_List.size(); ++i) {
 			bus = (Bus) (Bus_List.get(i));
-			g.drawImage(imgbusicon, bus.pos.x, bus.pos.y+15 +bbusStop[1][1].getY()-330 , this);
+			g.drawImage(imgbusicon, bus.pos.x, bus.pos.y+15 +lbbusStop[1][1].getY()-330 , this);
 			bus.move();
 		}
-
 	}
 	
-	public void MouseEvent(int i, int j)
-	{
-		bbusStop[i][j].addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				bbusStop[i][j].setIcon(icbusStopSelect);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				bbusStop[i][j].setIcon(icbusStop);
-			}
-
-			public void mousePressed(MouseEvent e) {
-
-			}
-		});
-		add(bbusStop[i][j]);
-	}
-
 	
 }
 
