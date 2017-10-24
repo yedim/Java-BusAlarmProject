@@ -26,29 +26,28 @@ import javax.swing.Timer;
 
 import Main.BusAlarm;
 
-public class BusPanel extends JPanel implements Runnable, ActionListener{
+public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 	BusAlarm busalarm;
-	
-	Image imgbusicon=new ImageIcon(this.getClass().getResource("/BusIcon.png")).getImage();
+
+	Image imgbusicon = new ImageIcon(this.getClass().getResource("/BusIcon.png")).getImage();
 	ImageIcon icmainScreen = new ImageIcon(this.getClass().getResource("/MainScreen2.jpg"));
 	ImageIcon icbusIcon = new ImageIcon(this.getClass().getResource("/BusIcon.png"));
 	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
 	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
 	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
-	Image icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png")).getImage();
+	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
 	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
-	ImageIcon icmainScreenBar=new ImageIcon(this.getClass().getResource("/MenuBar.png"));
-	ImageIcon icfold=new ImageIcon(this.getClass().getResource("/foldbutton2.png"));
+	ImageIcon icmainScreenBar = new ImageIcon(this.getClass().getResource("/MenuBar.png"));
+	ImageIcon icfold = new ImageIcon(this.getClass().getResource("/foldbutton2.png"));
+	ImageIcon icbusRoad;
 
-	
 	JLabel lbbusInfo;
 	JLabel label;
-	JLabel lbbusroad_green;
-	JLabel lbbusroad_yellow;
+	JButton bbusRoad[][] = new JButton[13][10];
 	JButton bbusStop[][] = new JButton[13][10];
 	JLabel lbbusStop[][] = new JLabel[13][10];
-	JLabel lbmainScreenBar=new JLabel(icmainScreenBar);
+	JLabel lbmainScreenBar = new JLabel(icmainScreenBar);
 	JButton bfoldButton = new JButton(icfold);
 
 	Calendar calendar1 = Calendar.getInstance();
@@ -61,7 +60,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 	Timer timer;
 	JLabel lbPresent;
 
-	boolean menubarVisible=true;
+	boolean menubarVisible = true;
 
 	int i = 0, j = 0;
 	int count = 0;
@@ -72,24 +71,21 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 	Thread th;
 
 	ArrayList Bus_List = new ArrayList();
-	ArrayList BusStop_List=new ArrayList();
+	ArrayList BusStop_List = new ArrayList();
 	Bus bus; // 버스 접근 키
 	BusStop busStop;
-	
+
 	static int time;
-	
+
 	public BusPanel(BusAlarm busalarm) {
-		
+
 		super(true);
 		setLayout(null);
-		
+
 		setBackground(new Color(255, 243, 225));
 		label = new JLabel();
 		label.setBackground(Color.YELLOW);
 		label.setBounds(0, 0, 1280, 720);
-
-		lbbusroad_green = new JLabel(icbusRoad_green);
-		lbbusroad_green.setBounds(95, 221, 120, 12);
 
 		JScrollBar vbar = new JScrollBar(JScrollBar.VERTICAL, 1000, 80, 0, 1500);
 		vbar.setBounds(1245, 0, 26, 686);
@@ -97,8 +93,9 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 
 		add(vbar);
 		add(label);
-		
-		lbPresent = new JLabel(year + "-" + month + "-" + day + "   " + hour + ":" + min + ":" + sec,SwingConstants.RIGHT);
+
+		lbPresent = new JLabel(year + "-" + month + "-" + day + "   " + hour + ":" + min + ":" + sec,
+				SwingConstants.RIGHT);
 		lbPresent.setVerticalAlignment(SwingConstants.TOP);
 		lbPresent.setBounds(1010, 5, 220, 40);
 		lbPresent.setFont(new Font("맑은 고딕", Font.BOLD, 20));
@@ -108,63 +105,95 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 		timer.setInitialDelay(0);
 		timer.start();
 
+		ActionListener busListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Object obj = e.getSource();
+				if (e.getSource() instanceof JButton) {
+					final Frame frbusStop = new Frame("busStop");
+					frbusStop.setVisible(true);
+					frbusStop.addWindowListener(new WindowAdapter() {
+						public void windowClosing(WindowEvent e) {
+							frbusStop.setVisible(false);
+							frbusStop.dispose();
+						}
+					});
+					frbusStop.setSize(400, 250);
+					frbusStop.setLocation(200, 200);
+					frbusStop.setResizable(false);
+					frbusStop.setLocationRelativeTo(null);
+				}
+			}
+		};
 		for (i = 0; i < 13; i++) {
 			for (j = 0; j < 10; j++) {
 				lbbusStop[i][j] = new JLabel();
-				lbbusStop[i][j].setText("정류장");//busapi.GetBusStopInfo(count)
+				lbbusStop[i][j].setText("정류장");// busapi.GetBusStopInfo(count)
 				count++;
 				lbbusStop[i][j].setBounds(115 * j + 77, 140 * i + 226, 110, 60);
 				add(lbbusStop[i][j]);
 
+				bbusStop[i][j] = new JButton(icbusStop);
+				bbusStop[i][j].setBounds(115 * j + 93, 140 * i + 220, 16, 16);
+				BusAlarm.setButton(bbusStop[i][j]);
+				add(bbusStop[i][j]);
 				
-//				bbusStop[i][j] = new JButton(icbusStop);
-//				bbusStop[i][j].setBounds(115 * j + 93, 140 * i + 220, 16, 16);
-//				BusAlarm.setButton(bbusStop[i][j]);
-//				add(bbusStop[i][j]);				
+				bbusStop[i][j].addActionListener(busListener);
 			}
+			for (j = 0; j < 9; j++) {
+				int randomRoad = (int) (Math.random() * 3);
+
+				if (randomRoad == 0) {
+					icbusRoad = icbusRoad_green;
+				} else if (randomRoad == 1) {
+					icbusRoad = icbusRoad_red;
+				} else {
+					icbusRoad = icbusRoad_yellow;
+				}
+
+				bbusRoad[i][j] = new JButton(icbusRoad);
+				bbusRoad[i][j].setBounds(115 * j + 96, 140 * i + 220, 120, 12);
+				BusAlarm.setButton(bbusRoad[i][j]);
+				add(bbusRoad[i][j]);
+			}
+
 		}
-		
-		add(lbbusroad_green);
-		
-		//메뉴바
-		lbbusInfo=new JLabel();
+
+		// 메뉴바
+		lbbusInfo = new JLabel();
 		lbbusInfo.setFont(new Font("나눔스퀘어 Bold", Font.PLAIN, 18));
-		lbbusInfo.setText("버스정보");//busapi.GetBusInfo()
-		lbbusInfo.setSize(500,100);
-		lbbusInfo.setLocation(0,0);
+		lbbusInfo.setText("버스정보");// busapi.GetBusInfo()
+		lbbusInfo.setSize(500, 100);
+		lbbusInfo.setLocation(0, 0);
 		add(lbbusInfo);
-		
+
 		lbmainScreenBar.setIcon(icmainScreenBar);
 		lbmainScreenBar.setSize(1280, 120);
-		lbmainScreenBar.setLocation(0,0);
+		lbmainScreenBar.setLocation(0, 0);
 		add(lbmainScreenBar);
-		
+
 		bfoldButton.setIcon(icfold);
 		bfoldButton.setSize(90, 26);
-		bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,120);
+		bfoldButton.setLocation(BusAlarm.SCREEN_W / 2 - 45, 120);
 		BusAlarm.setButton(bfoldButton);
 		bfoldButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				
-				if(menubarVisible == false)
-				{
+
+				if (menubarVisible == false) {
 					lbmainScreenBar.setVisible(true);
 					lbbusInfo.setVisible(true);
-					menubarVisible=true;
-					bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,120);
-				}
-				else
-				{
+					menubarVisible = true;
+					bfoldButton.setLocation(BusAlarm.SCREEN_W / 2 - 45, 120);
+				} else {
 					lbmainScreenBar.setVisible(false);
 					lbbusInfo.setVisible(false);
-					menubarVisible=false;		
-					bfoldButton.setLocation(BusAlarm.SCREEN_W/2-45,0);
+					menubarVisible = false;
+					bfoldButton.setLocation(BusAlarm.SCREEN_W / 2 - 45, 0);
 				}
 
 			}
 		});
 		add(bfoldButton);
-	
+
 //		bbusStop[0][0].addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
 //				Object obj = e.getSource();
@@ -183,11 +212,13 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 //					frbusStop.setLocationRelativeTo(null);
 //				}
 //			}
-//		});	
+//		});
+
 		
-	init();
-	start();
+		init();
+		start();
 	}
+	
 	class MyAdjustmentListener implements AdjustmentListener {
 		public void adjustmentValueChanged(AdjustmentEvent e) {
 
@@ -195,18 +226,20 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 				for (int j = 0; j < 10; j++) {
 					lbbusStop[i][j].setLocation(115 * j + 77, e.getValue() - (-140 * i + 774));
 					add(lbbusStop[i][j]);
-//					bbusStop[i][j].setLocation(115 * j + 93, e.getValue() - (-140 * i +780));
-//					BusAlarm.setButton(bbusStop[i][j]);
-//					add(bbusStop[i][j]);
+					bbusStop[i][j].setLocation(115 * j + 93, e.getValue() - (-140 * i + 780));
+					BusAlarm.setButton(bbusStop[i][j]);
+					add(bbusStop[i][j]);
+				}
+				for (int j = 0; j < 9; j++) {
+					bbusRoad[i][j].setLocation(115 * j + 96, e.getValue() - (-140 * i + 780));
+					BusAlarm.setButton(bbusRoad[i][j]);
+					add(bbusRoad[i][j]);
 				}
 			}
 
-			lbbusroad_green.setLocation(95, e.getValue() - 779);
-			add(lbbusroad_green);
-
-			label.setText(" New Value is " + e.getValue() + " ");
+			// label.setText(" New Value is " + e.getValue() + " ");
 			repaint();
-			
+
 		}
 	}
 
@@ -225,9 +258,10 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 	public void init() { // 편의를 위해 init 에서 기본적인 세팅을 합니다.
 		x = 100;
 		y = 100;
-		busStop_x=85;
-		busStop_y=85;
+		busStop_x = 85;
+		busStop_y = 85;
 	}
+
 	public void start() {
 		th = new Thread(this);
 		th.start();
@@ -238,7 +272,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 			BusStopProcess();
 
 			while (true) {
-				BusProcess(); 
+				BusProcess();
 
 				repaint();
 				Thread.sleep(40);
@@ -247,34 +281,27 @@ public class BusPanel extends JPanel implements Runnable, ActionListener{
 		} catch (Exception e) {
 		}
 	}
-	
-	public void BusStopProcess(){
-		busStop=new BusStop(busStop_x, busStop_y);
+
+	public void BusStopProcess() {
+		busStop = new BusStop(busStop_x, busStop_y);
 		BusStop_List.add(busStop);
 	}
-	
-	public void BusProcess() { //버스 처리 메소드
-		if (time%600==0) { 
+
+	public void BusProcess() { // 버스 처리 메소드
+		if (time % 600 == 0) {
 			bus = new Bus(x, y); // 좌표 체크하여 넘기기
 			Bus_List.add(bus); // 버스 추가
 		}
 	}
-	
+
 	public void paint(Graphics g) {
 		super.paint(g);
 
 		for (int i = 0; i < Bus_List.size(); ++i) {
 			bus = (Bus) (Bus_List.get(i));
-			g.drawImage(icbusStop, busStop.pos.x, bus.pos.y +lbbusStop[1][1].getY()-248 , this);
-		}
-		
-		for (int i = 0; i < Bus_List.size(); ++i) {
-			bus = (Bus) (Bus_List.get(i));
-			g.drawImage(imgbusicon, bus.pos.x, bus.pos.y+15 +lbbusStop[1][1].getY()-330 , this);
+			g.drawImage(imgbusicon, bus.pos.x, bus.pos.y + 15 + lbbusStop[1][1].getY() - 330, this);
 			bus.move();
 		}
 	}
-	
-	
-}
 
+}
