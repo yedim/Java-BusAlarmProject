@@ -36,6 +36,9 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	ImageIcon icbusRoad_green = new ImageIcon(this.getClass().getResource("/busRoad_green.png"));
 	ImageIcon icbusRoad_yellow = new ImageIcon(this.getClass().getResource("/busRoad_yelllow.png"));
 	ImageIcon icbusRoad_red = new ImageIcon(this.getClass().getResource("/busRoad_red.png"));
+	ImageIcon icbusRoad_green_curved = new ImageIcon(this.getClass().getResource("/curvedBusRoad_green.png"));
+	ImageIcon icbusRoad_yellow_curved = new ImageIcon(this.getClass().getResource("/curvedBusRoad_yellow.png"));
+	ImageIcon icbusRoad_red_curved = new ImageIcon(this.getClass().getResource("/curvedBusRoad_red.png"));
 	ImageIcon icbusStop = new ImageIcon(this.getClass().getResource("/busStopButton.png"));
 	ImageIcon icbusStopSelect = new ImageIcon(this.getClass().getResource("/busStopButtonSelect.png"));
 	ImageIcon icmainScreenBar = new ImageIcon(this.getClass().getResource("/MenuBar.png"));
@@ -67,14 +70,14 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	BusAPI busapi = new BusAPI();
 
 	int x, y;
-	int busStop_x=0, busStop_y=0;
 	Thread th;
 
 	ArrayList Bus_List = new ArrayList();
 	ArrayList BusStop_List = new ArrayList();
+	ArrayList BusRoad_List=new ArrayList();
 	Bus bus; // 버스 접근 키
 	BusStop busStop;
-	BusRoad bbusRoad;
+	BusRoad busRoad;
 
 
 	static int time;
@@ -158,13 +161,10 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				lbbusStop[i][j] = new JLabel();
 				lbbusStop[i][j].setText("정류장");// busapi.GetBusStopInfo(count)
 				count++;
-				lbbusStop[i][j].setBounds(115 * j + 77, 140 * i + 226, 110, 60);
+				lbbusStop[i][j].setBounds(115 * j + 77, 118 * i + 226, 110, 60);
 				add(lbbusStop[i][j]);
 
-				busStop_x=115 * j + 90;
-				busStop_y=140 * i + 227;
-
-				busStop=new BusStop(busStop_x, busStop_y);
+				busStop=new BusStop(115 * j + 90, 118 * i + 227);
 				busStop.setIcon(icbusStop);
 				busStop.setBounds(busStop.pos.x, busStop.pos.y,16,16);
 				BusAlarm.setButton(busStop);
@@ -175,20 +175,21 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 			}
 			for (j = 0; j < 9; j++) {
 				int randomRoad = (int) (Math.random() * 3);
-
+				
 				if (randomRoad == 0) {
-					icbusRoad = icbusRoad_green;
-				} else if (randomRoad == 1) {
-					icbusRoad = icbusRoad_red;
-				} else {
-					icbusRoad = icbusRoad_yellow;
-				}
-
-//				bbusRoad[i][j] = new JButton(icbusRoad);
-//				bbusRoad[i][j].setBounds(115 * j + 96, 140 * i + 220, 120, 12);
-//				BusAlarm.setButton(bbusRoad[i][j]);
-//				add(bbusRoad[i][j]);
-			}
+						icbusRoad = icbusRoad_green;
+					} else if (randomRoad == 1) {
+						icbusRoad = icbusRoad_red;
+					} else {
+						icbusRoad = icbusRoad_yellow;
+					}
+					busRoad = new BusRoad(115 * j + 95, 118 * i + 228);
+					busRoad.setIcon(icbusRoad);
+					busRoad.setBounds(115 * j + 95, 118 * i + 228, 120, 12);
+					BusAlarm.setButton(busRoad);
+					add(busRoad);
+					BusRoad_List.add(busRoad);
+				}				
 
 		}
 		addMenu();
@@ -202,22 +203,22 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 			for (int i = 0; i < 13; i++) {
 				for (int j = 0; j < 10; j++) {
-					lbbusStop[i][j].setLocation(115 * j + 77, e.getValue() - (-140 * i + 774));
+					lbbusStop[i][j].setLocation(115 * j + 77, e.getValue() - (-118 * i + 774));
 					add(lbbusStop[i][j]);
 				}
-		
-//				for (int j = 0; j < 9; j++) {
-//					bbusRoad[i][j].setLocation(115 * j + 96, e.getValue() - (-140 * i + 780));
-//					BusAlarm.setButton(bbusRoad[i][j]);
-//					add(bbusRoad[i][j]);
-//				}
 			}
 			for(int i=0; i<BusStop_List.size();++i)
 			{
 				busStop=(BusStop)(BusStop_List.get(i));
-				busStop.setBounds(busStop.pos.x,busStop.pos.y+ lbbusStop[1][1].getY() - 366,16,16);
-				//System.out.println(busStop.pos.x+" "+busStop.pos.y);
+				busStop.setBounds(busStop.pos.x,busStop.pos.y+ lbbusStop[1][1].getY() - 345,16,16);
+				//System.out.println(busStop.pos.x+" "+busStop.pos.y);//90,205,320,435,550 ..227,345,463,581,699
 				add(busStop);
+			}
+			for(int i=0; i<BusRoad_List.size();++i)
+			{
+				busRoad=(BusRoad)(BusRoad_List.get(i));
+				busRoad.setBounds(busRoad.pos.x, busRoad.pos.y+lbbusStop[1][1].getY()-345, 120, 12);	
+				add(busRoad);
 			}
  		}
 	}
@@ -234,9 +235,9 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 		lbPresent.setText(year + "-" + month + "-" + day + "   " + hour + ":" + min + ":" + sec);
 	}
 
-	public void init() { // 편의를 위해 init 에서 기본적인 세팅을 합니다.
-		x = 100;
-		y = 100;
+	public void init() { 
+		x = 100;//버스 초기위치
+		y = 130;
 	}
 
 	public void start() {
@@ -252,11 +253,11 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 					bus = (Bus) (Bus_List.get(i));
 					bus.move();
 					bus.setBounds(bus.pos.x, bus.pos.y +lbbusStop[1][1].getY() - 315, 48, 65);
-				//	System.out.println(bus.pos.x+" "+bus.pos.y);//100,240,380,....
+					System.out.println(bus.pos.x+" "+bus.pos.y);//130,248,366,....
 					for(int j=0; j<BusStop_List.size();++j)
 					{
 						busStop=(BusStop)(BusStop_List.get(j));
-						if(bus.pos.x+10==busStop.pos.x && bus.pos.y+127==busStop.pos.y)
+						if(bus.pos.x+10==busStop.pos.x && bus.pos.y+97==busStop.pos.y)
 						{
 							System.out.println(bus.name+" 도착");
 							bus.arriveBus();
