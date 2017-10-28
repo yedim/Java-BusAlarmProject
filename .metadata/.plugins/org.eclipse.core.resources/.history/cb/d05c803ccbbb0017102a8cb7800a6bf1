@@ -101,7 +101,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				frbusStop.setResizable(false);
 				frbusStop.setLocationRelativeTo(null);
 			}
-			if (e.getSource() instanceof Bus) {
+			if (e.getSource() instanceof Bus){
 				final Frame frbusStop = new Frame("Bus");
 				JPanel p =new JPanel();
 				p.setLayout(new FlowLayout());

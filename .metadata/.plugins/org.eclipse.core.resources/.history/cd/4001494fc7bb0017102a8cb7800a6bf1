@@ -1,0 +1,50 @@
+package BusAlarmScreen;
+
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+
+public class Bus extends JButton{
+
+	Point pos; //버스 좌표
+	int busPassenger=0;
+
+	Bus(int x, int y) {
+		pos = new Point(x, y); //버스의 좌표를 체크
+	}
+	
+	int bus_speed=1;
+
+	public void move() { // 버스 이동을 위한 메소드
+				
+		if(pos.x>1100 || pos.x<10)
+		{
+			bus_speed=-bus_speed;
+			pos.y+=140;			
+		}
+		pos.x+=bus_speed;	
+		
+	}
+	
+	public void DegreeOfcongestion(int busPassenger)
+	{
+		if(busPassenger>40){
+			
+		}
+		else if(busPassenger>25){
+			
+		}else {
+			
+		}
+	}
+	
+	
+	
+}

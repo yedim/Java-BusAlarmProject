@@ -1,8 +1,6 @@
 package BusAlarmScreen;
 
 import java.awt.Point;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JButton;
 
@@ -14,8 +12,8 @@ public class Bus extends JButton{
 	String name;
 	Bus(int x, int y, int busCnt) {
 		pos = new Point(x, y); //버스의 좌표를 체크
-		name=Integer.toString(busCnt);
-	}
+		name=Integer.toString(busCnt)
+;	}
 	
 	int bus_speed=1;
 
@@ -44,15 +42,14 @@ public class Bus extends JButton{
 	
 	public void arriveBus()
 	{
-		bus_speed=0;
-		Timer m_timer = new Timer();
-		TimerTask m_task=new TimerTask(){
-			public void run(){
-				bus_speed=1;
-			}
-		};
-		m_timer.schedule(m_task, 1000);
-		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	
 	
 }

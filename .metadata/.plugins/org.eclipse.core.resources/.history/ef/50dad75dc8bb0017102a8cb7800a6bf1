@@ -78,7 +78,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 
 	static int time;
-	static int busCnt;
+	static int busCnt=0;
 	
 	ActionListener busListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -101,7 +101,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				frbusStop.setResizable(false);
 				frbusStop.setLocationRelativeTo(null);
 			}
-			if (e.getSource() instanceof Bus) {
+			if (e.getSource() instanceof Bus){
 				final Frame frbusStop = new Frame("Bus");
 				JPanel p =new JPanel();
 				p.setLayout(new FlowLayout());
@@ -258,7 +258,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 						busStop=(BusStop)(BusStop_List.get(j));
 						if(bus.pos.x+10==busStop.pos.x && bus.pos.y+127==busStop.pos.y)
 						{
-							System.out.println(bus.name+" 도착");
+							System.out.println("버스"+busCnt+" 도착");
 							bus.arriveBus();
 						}
 					}
@@ -276,11 +276,11 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	public void BusProcess() { // 버스 처리 메소드
 
 		if (time % 600 == 0) {
-			bus = new Bus(x, y,busCnt); // 좌표 체크하여 넘기기
+			bus = new Bus(x, y); // 좌표 체크하여 넘기기
 			busCnt++;
 			Bus_List.add(bus); // 버스 추가
 			bus.setIcon(icbusIcon);
-			bus.setBounds(bus.pos.x, bus.pos.y + lbbusStop[1][1].getY() - 315, 48, 65);
+			bus.setBounds(bus.pos.x, bus.pos.y + 15 + lbbusStop[1][1].getY() - 330, 48, 65);
 			BusAlarm.setButton(bus);
 			bus.addActionListener(busListener);
 			add(bus);

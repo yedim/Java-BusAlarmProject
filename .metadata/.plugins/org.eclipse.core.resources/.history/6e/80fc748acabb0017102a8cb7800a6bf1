@@ -44,15 +44,15 @@ public class Bus extends JButton{
 	
 	public void arriveBus()
 	{
-		bus_speed=0;
 		Timer m_timer = new Timer();
 		TimerTask m_task=new TimerTask(){
-			public void run(){
-				bus_speed=1;
+			public void run{
+				
 			}
 		};
-		m_timer.schedule(m_task, 1000);
 		
 	}
+	
+	
 	
 }

@@ -51,8 +51,9 @@ public class Bus extends JButton{
 				bus_speed=1;
 			}
 		};
-		m_timer.schedule(m_task, 1000);
 		
 	}
+	
+	
 	
 }

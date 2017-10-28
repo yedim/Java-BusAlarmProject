@@ -1,8 +1,13 @@
 package BusAlarmScreen;
 
+import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 
@@ -11,10 +16,8 @@ public class Bus extends JButton{
 	Point pos; //πˆΩ∫ ¡¬«•
 	int busPassenger=0;//πˆΩ∫ Ω¬∞¥ºˆ
 	String degreeOfCongestion =null;//πˆΩ∫»•¿‚µµ
-	String name;
-	Bus(int x, int y, int busCnt) {
+	Bus(int x, int y) {
 		pos = new Point(x, y); //πˆΩ∫¿« ¡¬«•∏¶ √º≈©
-		name=Integer.toString(busCnt);
 	}
 	
 	int bus_speed=1;
@@ -33,26 +36,15 @@ public class Bus extends JButton{
 	public void countCongestion(int busPassenger)
 	{
 		if(busPassenger>40){
-			degreeOfCongestion="»•¿‚";
+			degreeOf
 		}
 		else if(busPassenger>25){
-			degreeOfCongestion="∫∏≈Î";
+			
 		}else {
-			degreeOfCongestion="ø©¿Ø";
+			
 		}
 	}
 	
-	public void arriveBus()
-	{
-		bus_speed=0;
-		Timer m_timer = new Timer();
-		TimerTask m_task=new TimerTask(){
-			public void run(){
-				bus_speed=1;
-			}
-		};
-		m_timer.schedule(m_task, 1000);
-		
-	}
+	
 	
 }
