@@ -75,6 +75,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	ArrayList BusStop_List = new ArrayList();
 	Bus bus; // 버스 접근 키
 	BusStop busStop[][]=new BusStop[13][10];
+	JLabel lbbusPassenger=new JLabel(Integer.toString(bus.busPassenger));
 
 	static int time;
 	

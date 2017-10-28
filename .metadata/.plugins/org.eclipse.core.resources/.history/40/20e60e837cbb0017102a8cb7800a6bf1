@@ -1,9 +1,9 @@
 package BusAlarmScreen;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +41,6 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	ImageIcon icmainScreenBar = new ImageIcon(this.getClass().getResource("/MenuBar.png"));
 	ImageIcon icfold = new ImageIcon(this.getClass().getResource("/foldbutton2.png"));
 	ImageIcon icbusRoad;
-	ImageIcon icbusSeat= new ImageIcon(this.getClass().getResource("/BusSeat.png"));
 
 	JLabel lbbusInfo;
 	JLabel label;
@@ -77,16 +76,11 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	BusStop busStop[][]=new BusStop[13][10];
 
 	static int time;
-	
 	ActionListener busListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() instanceof BusStop) {
+			// Object obj = e.getSource();
+			if (e.getSource() instanceof JButton) {
 				final Frame frbusStop = new Frame("busStop");
-				JPanel p= new JPanel();
-				JLabel l=new JLabel("¶ö¶ö¶ö");
-				p.setBackground(Color.WHITE);
-				p.add(l);
-				frbusStop.add(p);
 				frbusStop.setVisible(true);
 				frbusStop.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {
@@ -95,29 +89,6 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 					}
 				});
 				frbusStop.setSize(400, 250);
-				frbusStop.setLocation(200, 200);
-				frbusStop.setResizable(false);
-				frbusStop.setLocationRelativeTo(null);
-			}
-			if (e.getSource() instanceof Bus) {
-				final Frame frbusStop = new Frame("Bus");
-				JPanel p =new JPanel();
-				p.setLayout(new FlowLayout());
-				JLabel lbbusSeat = new JLabel(icbusSeat);
-				lbbusSeat.setBounds(0,0,263,523);
-				p.add(lbbusSeat);
-				JLabel l=new JLabel("ÇöÀç ½Â°´¼ö : "+Integer.toString(bus.busPassenger));
-				p.setBackground(Color.WHITE);
-				p.add(l);
-				frbusStop.add(p);
-				frbusStop.setVisible(true);
-				frbusStop.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						frbusStop.setVisible(false);
-						frbusStop.dispose();
-					}
-				});
-				frbusStop.setSize(300, 600);
 				frbusStop.setLocation(200, 200);
 				frbusStop.setResizable(false);
 				frbusStop.setLocationRelativeTo(null);

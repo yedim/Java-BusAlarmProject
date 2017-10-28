@@ -75,6 +75,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	ArrayList BusStop_List = new ArrayList();
 	Bus bus; // ¹ö½º Á¢±Ù Å°
 	BusStop busStop[][]=new BusStop[13][10];
+	JLabel lbbusPassenger=new JLabel(Integer.toString(bus.busPassenger));
 
 	static int time;
 	
@@ -106,7 +107,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				JLabel lbbusSeat = new JLabel(icbusSeat);
 				lbbusSeat.setBounds(0,0,263,523);
 				p.add(lbbusSeat);
-				JLabel l=new JLabel("ÇöÀç ½Â°´¼ö : "+Integer.toString(bus.busPassenger));
+				JLabel l=new JLabel("ÇöÀç ½Â°´¼ö : ");
 				p.setBackground(Color.WHITE);
 				p.add(l);
 				frbusStop.add(p);

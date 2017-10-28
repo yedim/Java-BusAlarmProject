@@ -14,7 +14,7 @@ import javax.swing.JButton;
 public class Bus extends JButton{
 
 	Point pos; //버스 좌표
-	int busPassenger=0;
+	int passenger=0;
 
 	Bus(int x, int y) {
 		pos = new Point(x, y); //버스의 좌표를 체크
@@ -30,11 +30,6 @@ public class Bus extends JButton{
 			pos.y+=140;			
 		}
 		pos.x+=bus_speed;	
-		
-	}
-	
-	public void congestion()
-	{
 		
 	}
 	

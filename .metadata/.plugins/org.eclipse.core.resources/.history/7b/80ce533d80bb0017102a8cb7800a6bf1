@@ -33,11 +33,6 @@ public class Bus extends JButton{
 		
 	}
 	
-	public void congestion()
-	{
-		
-	}
-	
 	
 	
 }

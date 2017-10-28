@@ -77,7 +77,6 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	BusStop busStop[][]=new BusStop[13][10];
 
 	static int time;
-	
 	ActionListener busListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() instanceof BusStop) {
@@ -106,7 +105,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				JLabel lbbusSeat = new JLabel(icbusSeat);
 				lbbusSeat.setBounds(0,0,263,523);
 				p.add(lbbusSeat);
-				JLabel l=new JLabel("⑷營 蝓偌熱 : "+Integer.toString(bus.busPassenger));
+				JLabel l=new JLabel("⑷營 蝓偌熱 : ");
 				p.setBackground(Color.WHITE);
 				p.add(l);
 				frbusStop.add(p);
