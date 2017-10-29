@@ -19,8 +19,12 @@ import java.io.*;
 
 public class BusAPI {
 
+	ArrayList<Integer> BusPassengerRide_List=new ArrayList<Integer>();
+	ArrayList<Integer> BusPassengerAlight_List=new ArrayList<Integer>();
+	
 	public BusAPI() {
-			}
+			
+	}
 
 	public NodeList BusInfo() {
 		NodeList nList = null;
@@ -95,6 +99,62 @@ public class BusAPI {
 		 +"¹ö½º³ë¼± : "+eBasic.getElementsByTagName("BUS_ROUTE_NO").item(0).getTextContent()+"<br>"
 		 +"³ë¼±¸í : "+eBasic.getElementsByTagName("BUS_ROUTE_NM").item(0).getTextContent();
 		 return s;
+	}
+	
+	public void GetBusPassengerInfo(int i)
+	{
+
+		NodeList nList = BusInfo();
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+
+			Node nNode = nList.item(temp);
+
+			
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					
+					System.out.println("¿ª¸í :" + eElement.getElementsByTagName("BUS_STA_NM").item(0).getTextContent());
+					System.out.println(temp);
+					 String[] array = new String[]{"MIDNIGHT","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN",
+							 "ELEVEN","TWELVE","THIRTEEN","FOURTEEN","FIFTEEN","SIXTEEN","SEVENTEEN","EIGHTEEN","NINETEEN","TWENTY",
+							 "TWENTY_ONE","TWENTY_TWO","TWENTY_THREE"};
+					 
+					 int daily_ride_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_RIDE_NUM").item(0).getTextContent())/ 30 ;
+					 int daily_alight_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_ALIGHT_NUM").item(0).getTextContent())/ 30 ;
+
+			
+					daily_ride_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_RIDE_NUM").item(0).getTextContent())/calculate_passengers(daily_ride_passengers);
+					daily_alight_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_ALIGHT_NUM").item(0).getTextContent())/calculate_passengers(daily_alight_passengers);
+
+					 System.out.println(i+"½Ã ½ÂÂ÷ ÃÑ°´¼ö : "+daily_ride_passengers);
+					 //+ Integer.parseInt(eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent())/30);
+					 System.out.println(i+"½Ã ÇÏÂ÷ ÃÑ°´¼ö : "+daily_alight_passengers);
+//					 System.out.println(i+"½Ã ÇÏÂ÷ ÃÑ°´¼ö : "+eElement.getElementsByTagName(array[i]+"_ALIGHT_NUM").item(0).getTextContent()+" ");
+					 
+					 BusPassengerRide_List.add(daily_ride_passengers);
+					 BusPassengerAlight_List.add(daily_alight_passengers);
+					 System.out.println();
+				}
+			
+		}
+		
+	}
+	public int calculate_passengers(int daily_passengers)
+	{
+		 int gap = 30;
+
+		if (daily_passengers > 80) {
+			gap = (int)(Math.random()*20)+60;
+		} else if (daily_passengers > 60) {
+			gap = (int)(Math.random()*20)+50;
+		} else if (daily_passengers > 40) {
+			gap = (int)(Math.random()*20)+40;
+		} else if (daily_passengers > 20) {
+			gap = (int)(Math.random()*20)+30;
+		}
+		System.out.println(gap);
+		return gap;
+
 	}
 
 }

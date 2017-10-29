@@ -82,15 +82,26 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 	static int time;
 	static int busCnt;
+	static int busStopCnt;
+	static boolean flag=true;
 	
-	ActionListener busListener = new ActionListener() {
+	ActionListener busStopListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			BusStop bs = (BusStop)e.getSource();
 			if (e.getSource() instanceof BusStop) {
 				final Frame frbusStop = new Frame("busStop");
 				JPanel p= new JPanel();
-				JLabel l=new JLabel("¶ö¶ö¶ö");
+				JLabel time=new JLabel("³²Àº ½Ã°£ : ");
+				JLabel waiting_passenger;
+
+				waiting_passenger=new JLabel("±â´Ù¸®´Â ½Â°´ ¼ö : "+bs.ride_passenger);
+				p.add(waiting_passenger);
+
+				
+				
 				p.setBackground(Color.WHITE);
-				p.add(l);
+				p.add(time);
+				
 				frbusStop.add(p);
 				frbusStop.setVisible(true);
 				frbusStop.addWindowListener(new WindowAdapter() {
@@ -104,29 +115,35 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				frbusStop.setResizable(false);
 				frbusStop.setLocationRelativeTo(null);
 			}
-			if (e.getSource() instanceof Bus) {
-				final Frame frbusStop = new Frame("Bus");
-				JPanel p =new JPanel();
-				p.setLayout(new FlowLayout());
-				JLabel lbbusSeat = new JLabel(icbusSeat);
-				lbbusSeat.setBounds(0,0,263,523);
-				p.add(lbbusSeat);
-				JLabel l=new JLabel("ÇöÀç ½Â°´¼ö : "+Integer.toString(bus.busPassenger));
-				p.setBackground(Color.WHITE);
-				p.add(l);
-				frbusStop.add(p);
-				frbusStop.setVisible(true);
-				frbusStop.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						frbusStop.setVisible(false);
-						frbusStop.dispose();
-					}
-				});
-				frbusStop.setSize(300, 600);
-				frbusStop.setLocation(200, 200);
-				frbusStop.setResizable(false);
-				frbusStop.setLocationRelativeTo(null);
-			}
+			
+		}
+	};
+	ActionListener busListener = new ActionListener(){
+		public void actionPerformed(ActionEvent e) {
+			Bus b = (Bus)e.getSource();
+		if (e.getSource() instanceof Bus) {
+			final Frame frbusStop = new Frame("Bus");
+			JPanel p =new JPanel();
+			p.setLayout(new FlowLayout());
+			JLabel lbbusSeat = new JLabel(icbusSeat);
+			lbbusSeat.setBounds(0,0,263,523);
+			p.add(lbbusSeat);
+			JLabel l=new JLabel("ÇöÀç ½Â°´¼ö : "+b.busPassenger);
+			p.setBackground(Color.WHITE);
+			p.add(l);
+			frbusStop.add(p);
+			frbusStop.setVisible(true);
+			frbusStop.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					frbusStop.setVisible(false);
+					frbusStop.dispose();
+				}
+			});
+			frbusStop.setSize(300, 600);
+			frbusStop.setLocation(200, 200);
+			frbusStop.setResizable(false);
+			frbusStop.setLocationRelativeTo(null);
+		}
 		}
 	};
 
@@ -156,6 +173,8 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 		timer.setInitialDelay(0);
 		timer.start();
 
+		busapi.GetBusPassengerInfo(hour);
+
 		for (i = 0; i < 13; i++) {
 			for (j = 0; j < 10; j++) {
 				lbbusStop[i][j] = new JLabel();
@@ -164,26 +183,28 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				lbbusStop[i][j].setBounds(115 * j + 77, 118 * i + 226, 110, 60);
 				add(lbbusStop[i][j]);
 
-				busStop=new BusStop(115 * j + 90, 118 * i + 227);
+				busStop=new BusStop(115 * j + 90, 118 * i + 227,busStopCnt);
+				busStopCnt++;
 				busStop.setIcon(icbusStop);
 				busStop.setBounds(busStop.pos.x, busStop.pos.y,16,16);
 				BusAlarm.setButton(busStop);
 				BusStop_List.add(busStop);
 				add(busStop);
 				
-				busStop.addActionListener(busListener);
+				busStop.addActionListener(busStopListener);
+				
 			}
 			for (j = 0; j < 9; j++) {
 				int randomRoad = (int) (Math.random() * 3);
 				
 				if (randomRoad == 0) {
-						icbusRoad = icbusRoad_green;
+					 icbusRoad = icbusRoad_red;
 					} else if (randomRoad == 1) {
-						icbusRoad = icbusRoad_red;
-					} else {
 						icbusRoad = icbusRoad_yellow;
+					} else {
+						icbusRoad = icbusRoad_green;
 					}
-					busRoad = new BusRoad(115 * j + 95, 118 * i + 228);
+					busRoad = new BusRoad(115 * j + 95, 118 * i + 228,randomRoad+1);//1,2,3
 					busRoad.setIcon(icbusRoad);
 					busRoad.setBounds(115 * j + 95, 118 * i + 228, 120, 12);
 					BusAlarm.setButton(busRoad);
@@ -194,6 +215,18 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 		}
 		addMenu();
 
+		
+		for(int i=0; i<busapi.BusPassengerRide_List.size(); i++)
+		{			
+			busStop= (BusStop)BusStop_List.get(i);
+			busStop.setBusRidePassenger(busapi.BusPassengerRide_List.get(i));
+			busStop.setBusAlightPassenger(busapi.BusPassengerAlight_List.get(i));
+			//System.out.println(i+" : "+busapi.BusPassengerRide_List.get(i)+ " "+busapi.BusPassengerAlight_List.get(i));
+		}
+//		for(int i=0; i<BusStop_List.size();i++)
+//		{
+//			//System.out.println(((BusStop)BusStop_List.get(i)).ride_passenger+"  "+((BusStop)BusStop_List.get(i)).alight_passenger+" "+((BusStop)BusStop_List.get(i)).busStopCnt);
+//		}
 		init();
 		start();
 	}
@@ -218,6 +251,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 			{
 				busRoad=(BusRoad)(BusRoad_List.get(i));
 				busRoad.setBounds(busRoad.pos.x, busRoad.pos.y+lbbusStop[1][1].getY()-345, 120, 12);	
+				//System.out.println(busRoad.pos.x +" "+busRoad.pos.y);//95,210,325,440....228,346,464
 				add(busRoad);
 			}
  		}
@@ -253,20 +287,44 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 					bus = (Bus) (Bus_List.get(i));
 					bus.move();
 					bus.setBounds(bus.pos.x, bus.pos.y +lbbusStop[1][1].getY() - 315, 48, 65);
-					System.out.println(bus.pos.x+" "+bus.pos.y);//130,248,366,....
+					//System.out.println(bus.pos.x+" "+bus.pos.y);//130,248,366,....
+					
+					for(int j=0; j<BusRoad_List.size();++j)
+					{
+						busRoad=(BusRoad)(BusRoad_List.get(j));
+						//System.out.println(busRoad.busType);
+						if((bus.pos.x+10==busRoad.pos.x || bus.pos.x+9==busRoad.pos.x || bus.pos.x+11==busRoad.pos.x)&& bus.pos.y+98==busRoad.pos.y)
+						{
+							//System.out.println(busRoad.busType);
+							//bus.controllSpeed(busRoad.busType);
+						}
+					}
 					for(int j=0; j<BusStop_List.size();++j)
 					{
 						busStop=(BusStop)(BusStop_List.get(j));
-						if(bus.pos.x+10==busStop.pos.x && bus.pos.y+97==busStop.pos.y)
+						if(bus.pos.x+10==busStop.pos.x && bus.pos.y+97==busStop.pos.y )
 						{
-							System.out.println(bus.name+" µµÂø");
-							bus.arriveBus();
+							//bus.busCnt
+							//System.out.println(busStop.ride_passenger+" "+busStop.alight_passenger);
+							//bus.busPassenger+=busStop.alight_passenger;
+							//System.out.println(bus.name+" µµÂø");
+							if(flag==true)
+							{
+								flag=false;
+								bus.arriveBus(busStop.ride_passenger,busStop.alight_passenger);
+								System.out.println(busStop.ride_passenger+" "+busStop.alight_passenger);
+							}
 						}
+						if(bus.pos.x==busStop.pos.x)
+						{
+							flag=true;
+						}
+						
 					}
 					
 					add(bus);
 				}
-				Thread.sleep(10);
+				Thread.sleep(50);
 				time++;
 
 			}

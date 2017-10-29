@@ -12,15 +12,17 @@ public class Bus extends JButton{
 	int busPassenger=0;//버스 승객수
 	String degreeOfCongestion =null;//버스혼잡도
 	String name;
-	int busSpeed=0;
+	int busCnt=0;
 	
 	Bus(int x, int y, int busCnt) {
 		pos = new Point(x, y); //버스의 좌표를 체크
 		name=Integer.toString(busCnt);
+		this.busCnt=busCnt;
 	}
 	
 	int busDir=1;
 	int line=1;
+	int busSpeed=1;
 
 	public void move() { // 버스 이동을 위한 메소드
 				
@@ -30,8 +32,8 @@ public class Bus extends JButton{
 			pos.y+=118;	
 			line++;
 		}
-		pos.x+=busDir;	
-		
+		//pos.x+=busDir*busSpeed;
+		pos.x+=busDir;
 	}
 	
 	public void countCongestion(int busPassenger)
@@ -46,8 +48,14 @@ public class Bus extends JButton{
 		}
 	}
 	
-	public void arriveBus()
+	public void arriveBus(int busStop_ride_passenger, int busStop_alight_passenger)
 	{
+		
+			busPassenger+=busStop_ride_passenger;
+			busPassenger-=busStop_alight_passenger;
+		
+		
+		
 		busDir=0;
 		Timer m_timer = new Timer();
 		TimerTask m_task=new TimerTask(){
@@ -60,11 +68,16 @@ public class Bus extends JButton{
 				{
 					busDir=1;
 				}
+				
+				
 			}
 		};
 		m_timer.schedule(m_task, 1000);
 		
 	}
-	//public void 
+	public void controllSpeed(int busType)
+	{
+		busSpeed=busType;
+	}
 	
 }
