@@ -22,14 +22,15 @@ public class BusAPI {
 	ArrayList<Integer> BusPassengerRide_List=new ArrayList<Integer>();
 	ArrayList<Integer> BusPassengerAlight_List=new ArrayList<Integer>();
 	
+	int busNumber;
 	public BusAPI() {
-			
+		busNumber=152;
 	}
 
 	public NodeList BusInfo() {
 		NodeList nList = null;
 		StringBuilder urlBuilder = new StringBuilder(
-				"http://openapi.seoul.go.kr:8088/7849444d62796c3435377954726871/xml/CardBusTimeNew/1/129/201708/152/");
+				"http://openapi.seoul.go.kr:8088/7849444d62796c3435377954726871/xml/CardBusTimeNew/1/129/201708/"+busNumber+"/");
 
 		InputStream tmpIS = null;
 		BufferedReader rd = null;
@@ -109,7 +110,6 @@ public class BusAPI {
 
 			Node nNode = nList.item(temp);
 
-			
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
 					
@@ -141,17 +141,25 @@ public class BusAPI {
 	}
 	public int calculate_passengers(int daily_passengers)
 	{
-		 int gap = 30;
+		 int gap = 200;//30*7 = 한달 * 한시간에 지나가는 버스의 수
 
-		if (daily_passengers > 80) {
-			gap = (int)(Math.random()*20)+60;
-		} else if (daily_passengers > 60) {
-			gap = (int)(Math.random()*20)+50;
-		} else if (daily_passengers > 40) {
-			gap = (int)(Math.random()*20)+40;
-		} else if (daily_passengers > 20) {
-			gap = (int)(Math.random()*20)+30;
-		}
+//		 if (daily_passengers > 90) {
+//				gap = (int)(Math.random()*10)+180;
+//		} else if (daily_passengers > 80) {
+//			gap = (int)(Math.random()*10)+160;
+//		}else if (daily_passengers > 70) {
+//			gap = (int)(Math.random()*10)+140;
+//		}else if (daily_passengers > 60) {
+//			gap = (int)(Math.random()*10)+120;
+//		}else if (daily_passengers > 50) {
+//			gap = (int)(Math.random()*10)+100;
+//		}else if (daily_passengers > 40) {
+//			gap = (int)(Math.random()*10)+80;
+//		}else if (daily_passengers > 30) {
+//			gap = (int)(Math.random()*10)+60;
+//		} else if (daily_passengers > 20) {
+//			gap = (int)(Math.random()*10)+40;
+//		}
 		System.out.println(gap);
 		return gap;
 

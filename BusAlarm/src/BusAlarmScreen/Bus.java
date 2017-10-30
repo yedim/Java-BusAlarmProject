@@ -1,83 +1,97 @@
 package BusAlarmScreen;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JButton;
 
-public class Bus extends JButton{
+public class Bus extends JButton {
 
-	Point pos; //πˆΩ∫ ¡¬«•
-	int busPassenger=0;//πˆΩ∫ Ω¬∞¥ºˆ
-	String degreeOfCongestion =null;//πˆΩ∫»•¿‚µµ
+	Point pos; // πˆΩ∫ ¡¬«•
+	int busPassenger = 0;// πˆΩ∫ Ω¬∞¥ºˆ
+	String degreeOfCongestion = null;// πˆΩ∫»•¿‚µµ
 	String name;
-	int busCnt=0;
+	int busCnt = 0;
+	boolean flag = true;
+
+	int bnum, bfloor, bseat;
+	int xy = 0;
+
+	int busDir = 1;
+	int line = 1;
+	int busSpeed = 1;
 	
+	int busSeat_numbers[];
+
 	Bus(int x, int y, int busCnt) {
-		pos = new Point(x, y); //πˆΩ∫¿« ¡¬«•∏¶ √º≈©
-		name=Integer.toString(busCnt);
-		this.busCnt=busCnt;
+		pos = new Point(x, y); // πˆΩ∫¿« ¡¬«•∏¶ √º≈©
+		name = Integer.toString(busCnt);
+		this.busCnt = busCnt;
 	}
-	
-	int busDir=1;
-	int line=1;
-	int busSpeed=1;
 
 	public void move() { // πˆΩ∫ ¿Ãµø¿ª ¿ß«— ∏ﬁº“µÂ
-				
-		if(pos.x>1100 || pos.x<10)
-		{
-			busDir=-busDir;
-			pos.y+=118;	
+
+		if (pos.x > 1150 || pos.x < 0) {
+			busDir = -busDir;
+			pos.y += 118;
 			line++;
 		}
-		//pos.x+=busDir*busSpeed;
-		pos.x+=busDir;
+		pos.x += busDir * busSpeed;
 	}
 	
-	public void countCongestion(int busPassenger)
-	{
-		if(busPassenger>40){
-			degreeOfCongestion="»•¿‚";
-		}
-		else if(busPassenger>25){
-			degreeOfCongestion="∫∏≈Î";
-		}else {
-			degreeOfCongestion="ø©¿Ø";
+	public void countCongestion(int busPassenger) {
+		if (busPassenger > 40) {
+			degreeOfCongestion = "»•¿‚";
+		} else if (busPassenger > 25) {
+			degreeOfCongestion = "∫∏≈Î";
+		} else {
+			degreeOfCongestion = "ø©¿Ø";
 		}
 	}
-	
-	public void arriveBus(int busStop_ride_passenger, int busStop_alight_passenger)
-	{
-		
-			busPassenger+=busStop_ride_passenger;
-			busPassenger-=busStop_alight_passenger;
-		
-		
-		
-		busDir=0;
+
+	public void arriveBus(int busStop_ride_passenger, int busStop_alight_passenger) {
+
+		busPassenger += busStop_ride_passenger;
+		busPassenger -= busStop_alight_passenger;
+		if (busPassenger < 0) {
+			busPassenger = 0;
+		}
+		busSpeed = 0;
 		Timer m_timer = new Timer();
-		TimerTask m_task=new TimerTask(){
-			public void run(){
-				if(line%2==0)
-				{
-					busDir=-1;
-				}
-				else
-				{
-					busDir=1;
-				}
-				
-				
+		TimerTask m_task = new TimerTask() {
+			public void run() {
+				busSpeed = 1;
 			}
 		};
 		m_timer.schedule(m_task, 1000);
 		
 	}
-	public void controllSpeed(int busType)
+
+	public void seat(int busPassenger)
 	{
-		busSpeed=busType;
+		if(busPassenger<24)
+		{
+			busSeat_numbers=new int[busPassenger+1];
+			for(int k=0; k<busSeat_numbers.length;k++)
+			{
+				busSeat_numbers[k]=(int)(Math.random()*24);
+				System.out.println(busSeat_numbers[k]);
+//				for(int kk=0; kk<k;kk++)
+//				{
+//					if(busSeat_numbers[k]==busSeat_numbers[kk])
+//					{
+//						k--;
+//						break;
+//					}
+//				}
+			}
+		}
+		
 	}
-	
+	public void where() { // ¡¬ºÆ ªˆƒ• ¡¬«•∞™ «“¥Á
+		xy = (int) ((Math.random() * 24));
+	}
+
 }
