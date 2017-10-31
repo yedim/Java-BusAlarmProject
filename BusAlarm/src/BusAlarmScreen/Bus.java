@@ -10,7 +10,7 @@ import javax.swing.JButton;
 public class Bus extends JButton {
 
 	Point pos; // ¹ö½º ÁÂÇ¥
-	int busPassenger = 0;// ¹ö½º ½Â°´¼ö
+	int busPassenger = (int)(Math.random()*15)+5;// ¹ö½º ½Â°´¼ö
 	String degreeOfCongestion = null;// ¹ö½ºÈ¥Àâµµ
 	String name;
 	int busCnt = 0;

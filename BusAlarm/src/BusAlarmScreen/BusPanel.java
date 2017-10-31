@@ -97,8 +97,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	int list1_x[] = { 34, 211, 34, 211, 34, 211, 34, 211, 34, 211, 34, 80, 172, 214, 34, 211, 34, 80, 172, 214, 34, 211, 34, 80, 126, 172, 211 };
 	int list1_y[] = { 103, 103, 148, 148, 194, 194, 240, 240, 286, 286, 353, 353, 353, 353, 397, 397, 397, 397, 440, 440, 484, 484, 484, 484, 484 };
 
-	//BusAlarmScreen.DBBus dbbus = new BusAlarmScreen.DBBus();
-	//JLabel lbseated[];
+	BusAlarmScreen.DBBus dbbus = new BusAlarmScreen.DBBus();
 	
 	ActionListener busStopListener = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -136,30 +135,12 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 			Bus b = (Bus)e.getSource();
 		if (e.getSource() instanceof Bus) {
 			final Frame frbusStop = new Frame("Bus");
-//			String low_floor;
+			String low_floor;
 					
 			JPanel p =new JPanel();
 			p.setLayout(null);
 			p.setBackground(Color.WHITE);
 			
-			
-//			if(bus.busPassenger>24)
-//			{
-//				for(int i=0; i<24;i++)
-//				{
-//					JLabel jb=new JLabel();
-//					jb.setIcon(icseated);
-//					jb.setBounds(list1_x[i], list1_y[i],47,40);
-//					p.add(jb);
-//				}
-//			}
-//			for(int i=0; i<bus.busPassenger;i++)
-//			{
-//				JLabel jb=new JLabel();
-//				jb.setIcon(icseated);
-//				jb.setBounds(list1_x[i], list1_y[i],47,40);
-//				p.add(jb);
-//			}
 			JLabel lbseated[]=new JLabel[b.busPassenger];
 			System.out.println("¹ö½º ½Â°´ : "+b.busPassenger);
 			
@@ -183,28 +164,42 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				}
 			}
 			
+			if(DBBus.low_floor_bus == 1) {
+				low_floor = "Àú»ó¹ö½º";
+			}
+			else {
+				low_floor="Áö»ó¹ö½º";
+			}
+			
 			JLabel lbbusSeat = new JLabel(icbusSeat);
 			lbbusSeat.setBounds(15,10,263,523);
 			p.add(lbbusSeat);
 			
 			JLabel passenger=new JLabel("ÇöÀç ½Â°´¼ö : "+Integer.toString(b.busPassenger));//+Integer.toString(bus.busPassenger)
 			passenger.setFont(new Font("³ª´®½ºÄù¾î", Font.BOLD, 15));
-//			JLabel number=new JLabel("¹ö½º ¹øÈ£ : ");//bus.bnum
-			
-//			JLabel low_bus=new JLabel("Àú»ó ¿©ºÎ : ");//+bus.bfloor
-//			JLabel cnt_seat=new JLabel("ÁÂ¼® ÃÑ °³¼ö : ");//+ bus.bseat+"°³"
-//			JLabel left_seat=new JLabel("³²Àº ÁÂ¼® ¼ö : ");
+			JLabel number=new JLabel("¹ö½º ¹øÈ£ : "+b.bnum);//bus.bnum
+			number.setFont(new Font("³ª´®½ºÄù¾î", Font.BOLD, 15));
+
+			JLabel low_bus=new JLabel("Àú»ó ¿©ºÎ : "+b.bfloor);//+bus.bfloor
+			low_bus.setFont(new Font("³ª´®½ºÄù¾î", Font.BOLD, 15));
+
+			JLabel cnt_seat=new JLabel("ÁÂ¼® ÃÑ °³¼ö : "+ b.bseat+"°³");//+ bus.bseat+"°³"
+			cnt_seat.setFont(new Font("³ª´®½ºÄù¾î", Font.BOLD, 15));
+
+			JLabel left_seat=new JLabel("³²Àº ÁÂ¼® ¼ö : ");
+			left_seat.setFont(new Font("³ª´®½ºÄù¾î", Font.BOLD, 15));
+
 			passenger.setBounds(19, 550, 166, 40);
-//			number.setBounds(19, 530, 30, 200);
-//			low_bus.setBounds(200, 530, 30, 100);
-//			cnt_seat.setBounds(19, 570, 30, 100);
-//			left_seat.setBounds(200, 570, 30, 100);
+			number.setBounds(19, 600, 166, 40);
+			low_bus.setBounds(160, 600, 166, 40);
+			cnt_seat.setBounds(19, 670, 166, 40);
+			left_seat.setBounds(160, 670, 166, 40);
 
 			p.add(passenger);
-//			p.add(number);
-//			p.add(low_bus);
-//			p.add(cnt_seat);
-//			p.add(left_seat);
+			p.add(number);
+			p.add(low_bus);
+			p.add(cnt_seat);
+			p.add(left_seat);
 			frbusStop.add(p);
 			frbusStop.setVisible(true);
 			
@@ -550,12 +545,12 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	public void BusProcess() { // ¹ö½º Ã³¸® ¸Þ¼Òµå
 
 		if (time % 1000 == 0) {
-			//DBBus.insertDB();
+			DBBus.insertDB();
 			bus = new Bus(x, y,busCnt); // ÁÂÇ¥ Ã¼Å©ÇÏ¿© ³Ñ±â±â
 			busCnt++;
-//			bus.bnum=dbbus.bus_num;
-//			bus.bfloor=dbbus.low_floor_bus;
-//			bus.bseat=dbbus.seat_num;
+			bus.bnum=dbbus.bus_num;
+			bus.bfloor=dbbus.low_floor_bus;
+			bus.bseat=dbbus.seat_num;
 			
 			Bus_List.add(bus); // ¹ö½º Ãß°¡
 			bus.setIcon(icbusIcon);
