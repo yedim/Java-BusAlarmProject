@@ -113,8 +113,8 @@ public class BusAPI {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
 					
-					System.out.println("¿ª¸í :" + eElement.getElementsByTagName("BUS_STA_NM").item(0).getTextContent());
-					System.out.println(temp);
+					//System.out.println("¿ª¸í :" + eElement.getElementsByTagName("BUS_STA_NM").item(0).getTextContent());
+					//System.out.println(temp);
 					 String[] array = new String[]{"MIDNIGHT","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN",
 							 "ELEVEN","TWELVE","THIRTEEN","FOURTEEN","FIFTEEN","SIXTEEN","SEVENTEEN","EIGHTEEN","NINETEEN","TWENTY",
 							 "TWENTY_ONE","TWENTY_TWO","TWENTY_THREE"};
@@ -126,14 +126,12 @@ public class BusAPI {
 					daily_ride_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_RIDE_NUM").item(0).getTextContent())/calculate_passengers(daily_ride_passengers);
 					daily_alight_passengers=Integer.parseInt(eElement.getElementsByTagName(array[i] + "_ALIGHT_NUM").item(0).getTextContent())/calculate_passengers(daily_alight_passengers);
 
-					 System.out.println(i+"½Ã ½ÂÂ÷ ÃÑ°´¼ö : "+daily_ride_passengers);
-					 //+ Integer.parseInt(eElement.getElementsByTagName(array[i]+"_RIDE_NUM").item(0).getTextContent())/30);
-					 System.out.println(i+"½Ã ÇÏÂ÷ ÃÑ°´¼ö : "+daily_alight_passengers);
-//					 System.out.println(i+"½Ã ÇÏÂ÷ ÃÑ°´¼ö : "+eElement.getElementsByTagName(array[i]+"_ALIGHT_NUM").item(0).getTextContent()+" ");
+					 //System.out.println(i+"½Ã ½ÂÂ÷ ÃÑ°´¼ö : "+daily_ride_passengers);
+					 //System.out.println(i+"½Ã ÇÏÂ÷ ÃÑ°´¼ö : "+daily_alight_passengers);
 					 
 					 BusPassengerRide_List.add(daily_ride_passengers);
 					 BusPassengerAlight_List.add(daily_alight_passengers);
-					 System.out.println();
+					 //System.out.println();
 				}
 			
 		}
@@ -141,26 +139,25 @@ public class BusAPI {
 	}
 	public int calculate_passengers(int daily_passengers)
 	{
-		 int gap = 200;//30*7 = ÇÑ´Ş * ÇÑ½Ã°£¿¡ Áö³ª°¡´Â ¹ö½ºÀÇ ¼ö
+		 int gap = 180;//30*7 = ÇÑ´Ş * ÇÑ½Ã°£¿¡ Áö³ª°¡´Â ¹ö½ºÀÇ ¼ö
 
 //		 if (daily_passengers > 90) {
-//				gap = (int)(Math.random()*10)+180;
+//				gap = (int)(Math.random()*10)+190;
 //		} else if (daily_passengers > 80) {
-//			gap = (int)(Math.random()*10)+160;
+//			gap = (int)(Math.random()*10)+170;
 //		}else if (daily_passengers > 70) {
-//			gap = (int)(Math.random()*10)+140;
+//			gap = (int)(Math.random()*10)+150;
 //		}else if (daily_passengers > 60) {
-//			gap = (int)(Math.random()*10)+120;
+//			gap = (int)(Math.random()*10)+130;
 //		}else if (daily_passengers > 50) {
-//			gap = (int)(Math.random()*10)+100;
+//			gap = (int)(Math.random()*10)+110;
 //		}else if (daily_passengers > 40) {
-//			gap = (int)(Math.random()*10)+80;
+//			gap = (int)(Math.random()*10)+90;
 //		}else if (daily_passengers > 30) {
-//			gap = (int)(Math.random()*10)+60;
+//			gap = (int)(Math.random()*10)+70;
 //		} else if (daily_passengers > 20) {
-//			gap = (int)(Math.random()*10)+40;
+//			gap = (int)(Math.random()*10)+50;
 //		}
-		System.out.println(gap);
 		return gap;
 
 	}

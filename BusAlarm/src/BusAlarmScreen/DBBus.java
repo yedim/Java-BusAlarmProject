@@ -61,13 +61,10 @@ public class DBBus {
 			if (stmt.execute(selectsql)) {
 				rs = stmt.getResultSet(); // 결과값 얻어오기
 			}
-			
-		}
-		catch(java.sql.SQLException e)
-		{
+
+		} catch (java.sql.SQLException e) {
 			System.out.println("Db쿼리오류");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// handle the error
 			System.out.println("getresult error");
 		}
@@ -79,7 +76,8 @@ public class DBBus {
 				bus_num = rs.getInt("bus_num"); // 버스 번호
 				low_floor_bus = rs.getInt("low_floor_bus"); // 저상버스
 				seat_num = rs.getInt("seat_num"); // 좌석 수
-				//System.out.println(bus_num + " " + low_floor_bus + " " + seat_num); // 정보출력
+				// System.out.println(bus_num + " " + low_floor_bus + " " +
+				// seat_num); // 정보출력
 			}
 		} catch (Exception ex) {
 			// handle the error

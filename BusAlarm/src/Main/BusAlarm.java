@@ -45,7 +45,6 @@ public class BusAlarm extends JFrame {
 			revalidate();
 			repaint();
 		}
-
 	}
 
 	public static void setButton(JButton jb) {
@@ -75,8 +74,6 @@ public class BusAlarm extends JFrame {
 					frame.setLocationRelativeTo(null);
 					frame.getContentPane().add(frame.firstpanel);
 
-					
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

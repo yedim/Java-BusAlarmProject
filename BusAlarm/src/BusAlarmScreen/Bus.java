@@ -10,7 +10,7 @@ import javax.swing.JButton;
 public class Bus extends JButton {
 
 	Point pos; // πˆΩ∫ ¡¬«•
-	int busPassenger = (int)(Math.random()*15)+5;// πˆΩ∫ Ω¬∞¥ºˆ
+	int busPassenger = (int) (Math.random() * 15) + 5;// πˆΩ∫ √ ±‚ Ω¬∞¥ºˆ
 	String degreeOfCongestion = null;// πˆΩ∫»•¿‚µµ
 	String name;
 	int busCnt = 0;
@@ -19,10 +19,8 @@ public class Bus extends JButton {
 	int bnum, bfloor, bseat;
 	int xy = 0;
 
-	int busDir = 1;
-	int line = 1;
-	int busSpeed = 1;
-	
+	int busDir = 1, line = 1,busSpeed = 1;
+
 	int busSeat_numbers[];
 
 	Bus(int x, int y, int busCnt) {
@@ -40,7 +38,7 @@ public class Bus extends JButton {
 		}
 		pos.x += busDir * busSpeed;
 	}
-	
+
 	public void countCongestion(int busPassenger) {
 		if (busPassenger > 40) {
 			degreeOfCongestion = "»•¿‚";
@@ -58,6 +56,9 @@ public class Bus extends JButton {
 		if (busPassenger < 0) {
 			busPassenger = 0;
 		}
+		if (busPassenger > 45) {
+			busPassenger = 45;
+		}
 		busSpeed = 0;
 		Timer m_timer = new Timer();
 		TimerTask m_task = new TimerTask() {
@@ -66,32 +67,16 @@ public class Bus extends JButton {
 			}
 		};
 		m_timer.schedule(m_task, 1000);
-		
+
 	}
 
-	public void seat(int busPassenger)
-	{
-		if(busPassenger<24)
-		{
-			busSeat_numbers=new int[busPassenger+1];
-			for(int k=0; k<busSeat_numbers.length;k++)
-			{
-				busSeat_numbers[k]=(int)(Math.random()*24);
-				System.out.println(busSeat_numbers[k]);
-//				for(int kk=0; kk<k;kk++)
-//				{
-//					if(busSeat_numbers[k]==busSeat_numbers[kk])
-//					{
-//						k--;
-//						break;
-//					}
-//				}
+	public void seat(int busPassenger) {
+		if (busPassenger < 24) {
+			busSeat_numbers = new int[busPassenger + 1];
+			for (int k = 0; k < busSeat_numbers.length; k++) {
+				busSeat_numbers[k] = (int) (Math.random() * 24);
 			}
 		}
-		
-	}
-	public void where() { // ¡¬ºÆ ªˆƒ• ¡¬«•∞™ «“¥Á
-		xy = (int) ((Math.random() * 24));
-	}
 
+	}
 }
