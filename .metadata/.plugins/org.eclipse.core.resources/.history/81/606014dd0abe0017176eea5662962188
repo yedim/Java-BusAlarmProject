@@ -109,6 +109,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 			if (e.getSource() instanceof BusStop) {
 				final Frame frbusStop = new Frame("busStop");
 				JPanel p = new JPanel();
+				JLabel time = new JLabel("남은 시간 : ");
 				JLabel waiting_passenger;
 
 				waiting_passenger = new JLabel("기다리는 승객 수 : " + bs.ride_passenger);
@@ -116,6 +117,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 				System.out.println(bs.pos.x + " " + bs.pos.y);
 				p.setBackground(Color.WHITE);
+				p.add(time);
 
 				frbusStop.add(p);
 				frbusStop.setVisible(true);
@@ -259,7 +261,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 			for (j = 0; j < 10; j++) {
 
 				lbbusStop[i][j] = new JLabel();
-				lbbusStop[i][j].setText(busapi.GetBusStopInfo(count));// busapi.GetBusStopInfo(count)
+				lbbusStop[i][j].setText("정류장");// busapi.GetBusStopInfo(count)
 				count++;
 				if (i % 2 != 0) {
 					lbbusStop[i][j].setBounds(115 * (9 - j) + 77, 118 * i + 226, 110, 70);
@@ -386,6 +388,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 				busRoad.setBounds(busRoad.pos.x, busRoad.pos.y + lbbusStop[1][1].getY() - 345, 120, 12);
 				add(busRoad);
 			}
+
 		}
 	}
 
@@ -412,7 +415,11 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	}
 
 	public void BusGap() { // 시간대별로 버스 총 개수 정하기
-		if ((7 <= hour && hour <= 9) || (12 <= hour && hour <= 14) || (18 <= hour && hour <= 20)) { // 버스가 많을 시간(아침,점심,저녁)
+		if ((7 <= hour && hour <= 9) || (12 <= hour && hour <= 14) || (18 <= hour && hour <= 20)) { // 버스
+																									// 많을
+																									// 시간(아침,
+																									// 점심,
+																									// 저녁)
 			gap = 40;
 		} else if ((5 <= hour && hour <= 6) || (22 <= hour && hour <= 24)) { // 없음
 			gap = 20;
@@ -522,7 +529,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 
 	public void BusProcess() { // 버스 처리 메소드
 
-		if (time % 600 == 0) {
+		if (time % 800 == 0) {
 			DBBus.insertDB();
 			bus = new Bus(x, y, busCnt); // 좌표 체크하여 넘기기
 			busCnt++;
@@ -560,7 +567,7 @@ public class BusPanel extends JPanel implements Runnable, ActionListener {
 	public void addMenu() {
 		// 메뉴바
 		lbbusInfo = new JLabel();
-		lbbusInfo.setFont(new Font("나눔고딕 Bold", Font.PLAIN, 18));
+		lbbusInfo.setFont(new Font("나눔스퀘어 Bold", Font.PLAIN, 18));
 		lbbusInfo.setText(busapi.GetBusInfo());// busapi.GetBusInfo()
 		lbbusInfo.setSize(500, 100);
 		lbbusInfo.setLocation(0, 0);
